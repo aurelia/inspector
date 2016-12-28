@@ -8,10 +8,31 @@
   </h1>
 
   <main>
-    <debug-expander heading="Binding Context"></debug-expander>
+    <debug-expander heading="Binding Context">
+      <template if.bind="debugInfo.bindingContext">
+        ${debugInfo.bindingContext | stringify}
+      </template>
+      <template if.bind="!debugInfo.bindingContext">
+        <span class="not-found">No Binding Context found for the selected node.</span>
+      </template>
+    </debug-expander>
 
-    <debug-expander heading="Custom Element"></debug-expander>
+    <debug-expander heading="Custom Element">
+      <template if.bind="debugInfo.customElement">
+        ${debugInfo.customElement | stringify}
+      </template>
+      <template if.bind="!debugInfo.customElement">
+        <span class="not-found">The selected node is not a Custom Element.</span>
+      </template>
+    </debug-expander>
 
-    <debug-expander heading="Custom Attributes"></debug-expander>
+    <debug-expander heading="Custom Attributes">
+      <template if.bind="debugInfo.customAttributes">
+        ${debugInfo.customAttributes | stringify}
+      </template>
+      <template if.bind="!debugInfo.customAttributes">
+        <span class="not-found">No Custom Attributes found on the selected node.</span>
+      </template>
+    </debug-expander>
   </main>
 </template>

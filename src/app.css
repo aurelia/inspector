@@ -1,6 +1,5 @@
 .app-header {
   background: #f4f4f4;
-  box-shadow: -20px 0 14px 0 rgba(0,0,0,.1), inset 0 -1px 0 rgba(0,0,0,.1);
   padding: 0;
   margin: 4px 0 0 0;
   text-align: center;
@@ -11,4 +10,10 @@
   top: -7px;
   font-weight: 100;
   font-size: 16px;
+  color: #BB79A8;
+}
+
+.not-found {
+  font-style: italic;
+  font-size: 10px;
 }
