@@ -1,0 +1,21 @@
+<template bindable="controller">
+  <require from="./controller-view.css"></require>
+
+  <div class="category" if.bind="controller.bindables.length">
+    <h4 class="category-name">Bindables</h4>
+    <ul class="properties">
+      <li repeat.for="bindable of controller.bindables">
+        <property-view property.bind="bindable"></property-view>
+      </li>
+    </ul>
+  </div>
+
+  <div class="category" if.bind="controller.properties.length">
+    <h4 class="category-name">Properties</h4>
+    <ul class="properties">
+      <li repeat.for="property of controller.properties">
+        <property-view property.bind="property"></property-view>
+      </li>
+    </ul>
+  </div>
+</template>

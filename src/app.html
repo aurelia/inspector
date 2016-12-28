@@ -10,28 +10,36 @@
   <main>
     <debug-expander heading="Binding Context">
       <template if.bind="debugInfo.bindingContext">
-        ${debugInfo.bindingContext | stringify}
+        <ul>
+
+        </ul>
       </template>
       <template if.bind="!debugInfo.bindingContext">
-        <span class="not-found">No Binding Context found for the selected node.</span>
+        <span class="not-found">No binding context found for the selected node.</span>
       </template>
     </debug-expander>
 
     <debug-expander heading="Custom Element">
       <template if.bind="debugInfo.customElement">
-        ${debugInfo.customElement | stringify}
+        <controller-view controller.bind="debugInfo.customElement"></controller-view>
       </template>
       <template if.bind="!debugInfo.customElement">
-        <span class="not-found">The selected node is not a Custom Element.</span>
+        <span class="not-found">The selected node is not a custom element.</span>
       </template>
     </debug-expander>
 
     <debug-expander heading="Custom Attributes">
       <template if.bind="debugInfo.customAttributes">
-        ${debugInfo.customAttributes | stringify}
+        <ul>
+          <li repeat.for="customAttribute of debugInfo.customAttributes" class="custom-attribute">
+            <h3 class="attribute-name">${customAttribute.name}</h3>&nbsp;<span class="block-token">{<span>
+            <controller-view controller.bind="customAttribute"></controller-view>
+            <span class="block-token">}</span>
+          </li>
+        </ul>
       </template>
       <template if.bind="!debugInfo.customAttributes">
-        <span class="not-found">No Custom Attributes found on the selected node.</span>
+        <span class="not-found">No custom attributes found on the selected node.</span>
       </template>
     </debug-expander>
   </main>

@@ -1,0 +1,10 @@
+controller-view .category-name {
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 4px;
+  margin-top: 2px;
+}
+
+controller-view .properties {
+  margin-left: 8px;
+}

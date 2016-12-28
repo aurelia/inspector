@@ -17,3 +17,17 @@
   font-style: italic;
   font-size: 10px;
 }
+
+.custom-attribute {
+  margin-bottom: 4px;
+}
+
+.custom-attribute .attribute-name, .custom-attribute .block-token {
+  font-size: 12px;
+  display: inline;
+}
+
+.custom-attribute controller-view {
+  margin-left: 8px;
+  display: block;
+}

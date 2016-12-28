@@ -1,0 +1,13 @@
+property-view {
+  margin-top: 2px;
+  display: block;
+}
+
+property-view .property-name {
+  font-size: 12px;
+  color: red;
+}
+
+property-view .property-value, property-view .token-colon {
+  font-size: 12px;
+}

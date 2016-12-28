@@ -4,56 +4,54 @@ declare var chrome: any;
 declare var $0: any;
 
 var processSelection = function () {
-  function createDebugValue(value) {
+  function setValue(debugInfo, value) {
     let type;
     let debugValue;
 
     if (value instanceof Node) {
-      type = 'node';
-      debugValue = '[node]';
+      debugInfo.type = 'node';
+      debugInfo.value = '[node]';
     } else if (Array.isArray(value)) {
-      type = 'array';
-      debugValue = '[array]';
+      debugInfo.type = 'array';
+      debugInfo.value = '[array]';
     } else {
-      type = typeof value;
-      debugValue = value;
+      debugInfo.type = typeof value;
+      debugInfo.value = value;
     }
 
-    if (type === 'object') {
+    if (debugInfo.type === 'object') {
       if (value.constructor) {
-        type = debugValue = value.constructor.name;
+        debugInfo.type = debugInfo.value = value.constructor.name;
       } else {
-        debugValue = '[object]';
+        debugInfo.value = '[object]';
       }
     }
 
-    return {
-      type: type,
-      value: debugValue
-    };
+    return debugInfo;
   }
 
   function createControllerDebugInfo(controller) {
     try {
-      let controllerDebugInfo: any = {};
+      let controllerDebugInfo: any = {
+        name: controller.behavior.elementName || controller.behavior.attributeName
+      };
+      
       let viewModel = controller.viewModel;
 
       controllerDebugInfo.bindables = controller.behavior.properties.map(x => {
-        return {
+        return setValue({
           name: x.name,
           attribute: x.attribute,
-          value: createDebugValue(viewModel[x.name])
-        }
+        }, viewModel[x.name]);
       });
 
       controllerDebugInfo.properties = Object.keys(viewModel).filter(x => {
         let found = controllerDebugInfo.bindables.find(x => x.name === x);
         return !found && !x.startsWith('_');
       }).map(x => {
-        return {
-          name: x,
-          value: createDebugValue(viewModel[x])
-        };
+        return setValue({
+          name: x
+        }, viewModel[x]);
       });
 
       return controllerDebugInfo;
