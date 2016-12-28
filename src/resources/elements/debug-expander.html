@@ -1,0 +1,10 @@
+<template>
+  <require from="./debug-expander.css"></require>
+
+  <section click.trigger="isExpanded = !isExpanded">
+    <h2 class="header">${heading}</h2>
+    <div class="content" show.bind="isExpanded">
+      <slot></slot>
+    </div>
+  </section>
+</template>
