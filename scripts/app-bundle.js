@@ -6161,7 +6161,6 @@ define('resources/elements/debug-expander',["require", "exports", "aurelia-templ
     "use strict";
     var DebugExpander = (function () {
         function DebugExpander() {
-            this.isExpanded = true;
         }
         return DebugExpander;
     }());
@@ -6179,7 +6178,7 @@ define('text!resources/elements/aurelia-logo.html', ['module'], function(module)
 define('text!resources/elements/controller-view.css', ['module'], function(module) { module.exports = "controller-view .category-name {\n  font-size: 10px;\n  margin-bottom: 4px;\n  margin-top: 2px;\n}\n\ncontroller-view .properties {\n  margin-left: 8px;\n}\n"; });
 define('text!resources/elements/controller-view.html', ['module'], function(module) { module.exports = "<template bindable=\"controller\"><require from=\"./controller-view.css\"></require><div class=\"category\" if.bind=\"controller.bindables.length\"><h4 class=\"category-name\">Bindables</h4><ul class=\"properties\"><li repeat.for=\"bindable of controller.bindables\"><property-view property.bind=\"bindable\"></property-view></li></ul></div><div class=\"category\" if.bind=\"controller.properties.length\"><h4 class=\"category-name\">Properties</h4><ul class=\"properties\"><li repeat.for=\"property of controller.properties\"><property-view property.bind=\"property\"></property-view></li></ul></div></template>"; });
 define('text!resources/elements/debug-expander.css', ['module'], function(module) { module.exports = "debug-expander .header {\n  font-weight: normal;\n  font-size: 12px;\n  margin: 0;\n  padding: 4px;\n  background: #f4f4f4;\n  border-bottom: 1px solid rgba(0, 0, 0, .25);\n  border-top: 1px solid rgba(0, 0, 0, .25);\n}\n\ndebug-expander .content { \n  margin: 4px;\n}\n"; });
-define('text!resources/elements/debug-expander.html', ['module'], function(module) { module.exports = "<template><require from=\"./debug-expander.css\"></require><section click.trigger=\"isExpanded = !isExpanded\"><h2 class=\"header\">${heading}</h2><div class=\"content\" show.bind=\"isExpanded\"><slot></slot></div></section></template>"; });
+define('text!resources/elements/debug-expander.html', ['module'], function(module) { module.exports = "<template><require from=\"./debug-expander.css\"></require><section><h2 class=\"header\">${heading}</h2><div class=\"content\"><slot></slot></div></section></template>"; });
 define('text!resources/elements/property-view.css', ['module'], function(module) { module.exports = "property-view {\n  margin-top: 2px;\n  display: block;\n}\n\nproperty-view .property-name {\n  font-size: 12px;\n  color: red;\n}\n\nproperty-view .property-value, property-view .token-colon {\n  font-size: 12px;\n}\n"; });
 define('text!resources/elements/property-view.html', ['module'], function(module) { module.exports = "<template bindable=\"property\"><require from=\"./property-view.css\"></require><span class=\"property-name\">${property.name}</span><span class=\"token-colon\">:</span>&nbsp;<span class=\"property-value\">${property.value}</span></template>"; });
 define('aurelia-dependency-injection',['exports', 'aurelia-metadata', 'aurelia-pal'], function (exports, _aureliaMetadata, _aureliaPal) {
