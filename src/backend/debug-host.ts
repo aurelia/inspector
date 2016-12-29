@@ -1,6 +1,5 @@
 import {autoinject} from 'aurelia-dependency-injection';
 
-declare var chrome: any;
 declare var $0: any;
 
 var processSelection = function () {
