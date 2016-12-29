@@ -137,6 +137,16 @@ var processSelection = function () {
     return _getBindingContext(node.parentNode);
   }
 
+  function convertObjectToDebugInfo(obj) {
+    return {
+      properties: Object.keys(obj).map(x => {
+        return setValue({
+          name: x
+        }, obj[x]);
+      })
+    };
+  }
+
   var selectedNode = $0;
   var debugInfo: any = {};
 
@@ -157,7 +167,7 @@ var processSelection = function () {
     }
   }
 
-  debugInfo.bindingContext = getBindingContext(selectedNode);
+  debugInfo.bindingContext = convertObjectToDebugInfo(getBindingContext(selectedNode));
 
   return debugInfo;
 };

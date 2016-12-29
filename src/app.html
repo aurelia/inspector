@@ -11,7 +11,9 @@
     <debug-expander heading="Binding Context">
       <template if.bind="debugInfo.bindingContext">
         <ul>
-
+          <li repeat.for="property of debugInfo.bindingContext.properties">
+            <property-view property.bind="property"></property-view>
+          </li>
         </ul>
       </template>
       <template if.bind="!debugInfo.bindingContext">
