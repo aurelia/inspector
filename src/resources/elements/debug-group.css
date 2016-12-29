@@ -1,4 +1,4 @@
-debug-expander .header {
+debug-group .header {
   font-weight: normal;
   font-size: 12px;
   margin: 0;
@@ -8,6 +8,6 @@ debug-expander .header {
   border-top: 1px solid rgba(0, 0, 0, .25);
 }
 
-debug-expander .content { 
+debug-group .content { 
   margin: 4px;
 }

@@ -8,7 +8,7 @@
   </h1>
 
   <main>
-    <debug-expander heading="Binding Context">
+    <debug-group heading="Binding Context">
       <template if.bind="debugInfo.bindingContext">
         <ul>
           <li repeat.for="property of debugInfo.bindingContext.properties">
@@ -19,18 +19,18 @@
       <template if.bind="!debugInfo.bindingContext">
         <span class="not-found">No binding context found for the selected node.</span>
       </template>
-    </debug-expander>
+    </debug-group>
 
-    <debug-expander heading="Custom Element">
+    <debug-group heading="Custom Element">
       <template if.bind="debugInfo.customElement">
         <controller-view controller.bind="debugInfo.customElement"></controller-view>
       </template>
       <template if.bind="!debugInfo.customElement">
         <span class="not-found">The selected node is not a custom element.</span>
       </template>
-    </debug-expander>
+    </debug-group>
 
-    <debug-expander heading="Custom Attributes">
+    <debug-group heading="Custom Attributes">
       <template if.bind="debugInfo.customAttributes">
         <ul>
           <li repeat.for="customAttribute of debugInfo.customAttributes" class="custom-attribute">
@@ -43,6 +43,6 @@
       <template if.bind="!debugInfo.customAttributes">
         <span class="not-found">No custom attributes found on the selected node.</span>
       </template>
-    </debug-expander>
+    </debug-group>
   </main>
 </template>
