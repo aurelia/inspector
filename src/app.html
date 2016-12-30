@@ -34,7 +34,7 @@
       <template if.bind="debugInfo.customAttributes">
         <ul>
           <li repeat.for="customAttribute of debugInfo.customAttributes" class="custom-attribute">
-            <h3 class="attribute-name">${customAttribute.name}</h3>&nbsp;<span class="block-token">{<span>
+            <h3 class="attribute-name">${customAttribute.name}</h3>&nbsp;<span class="block-token">{</span>
             <controller-view controller.bind="customAttribute"></controller-view>
             <span class="block-token">}</span>
           </li>

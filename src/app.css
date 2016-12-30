@@ -22,9 +22,18 @@
   margin-bottom: 4px;
 }
 
+.custom-attribute .attribute-name {
+  color: saddlebrown;
+}
+
+.custom-attribute .block-token {
+  color: gray;
+}
+
 .custom-attribute .attribute-name, .custom-attribute .block-token {
   font-size: 12px;
   display: inline;
+  font-family: monospace;
 }
 
 .custom-attribute controller-view {
