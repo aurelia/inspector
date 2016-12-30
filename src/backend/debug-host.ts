@@ -197,4 +197,14 @@ export class DebugHost {
       consumer.onSelectionChanged(new SelectionChanged(debugObject))
     });
   }
+
+  toggleDebugValueExpansion(debugValue) {
+    if (debugValue.canExpand) {
+      debugValue.isExpanded = !debugValue.isExpanded;
+
+      if (debugValue.isExpanded) {
+        //TODO: eval in page
+      }
+    }
+  }
 }

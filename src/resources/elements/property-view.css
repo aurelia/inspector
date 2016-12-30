@@ -9,11 +9,15 @@ property-view .arrow {
   cursor: default;
 }
 
+property-view .arrow .right {
+  margin-right: 1px;
+}
+
 property-view .property-name {
   font-size: 12px;
   color: purple;
   font-family: monospace;
-  margin-left: 2px;
+  margin-left: 1px;
 }
 
 property-view .property-value, property-view .token-colon {
