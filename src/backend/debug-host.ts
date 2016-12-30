@@ -11,6 +11,7 @@ var processSelection = function () {
       debugInfo.type = 'node';
       debugInfo.value = '[node]';
     } else if (Array.isArray(value)) {
+      debugInfo.canExpand = true;
       debugInfo.type = 'array';
       debugInfo.value = '[array]';
     } else {
@@ -19,8 +20,10 @@ var processSelection = function () {
     }
 
     if (debugInfo.type === 'object') {
+      debugInfo.canExpand = true;
+
       if (value.constructor) {
-        debugInfo.type = debugInfo.value = value.constructor.name;
+        debugInfo.value = value.constructor.name;
       } else {
         debugInfo.value = '[object]';
       }

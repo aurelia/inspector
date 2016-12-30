@@ -8,7 +8,7 @@
   </h1>
 
   <main>
-    <debug-group heading="Binding Context">
+    <debug-group heading="Binding Context" show.bind="true">
       <template if.bind="debugInfo.bindingContext">
         <ul>
           <li repeat.for="property of debugInfo.bindingContext.properties">

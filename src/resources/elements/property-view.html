@@ -1,5 +1,35 @@
 <template bindable="property">
   <require from="./property-view.css"></require>
 
-  <span class="property-name">${property.name}</span><span class="token-colon">:</span>&nbsp;<span class="property-value">${property.value}</span>
+  <span css="opacity: ${property.canExpand? 1 : 0}" class="arrow">
+    <template if.bind="property.isExpanded">▼</template>
+    <template if.bind="!property.isExpanded">▶</template>
+  </span>
+  <span class="property-name">${property.name}</span><span class="token-colon">:</span>&nbsp;
+  
+  <template if.bind="property.type === 'boolean'">
+    <span class="property-value boolean">${property.value}</span>
+  </template>
+  
+  <template if.bind="property.type === 'string'">
+    <span class="property-value string">"${property.value}"</span>
+  </template>
+
+  <template if.bind="property.type === 'number'">
+    <span class="property-value number">${property.value}</span>
+  </template>
+
+  <template if.bind="property.type === 'array'">
+    <span class="property-value array">[...]</span>
+  </template>
+
+  <template if.bind="property.type === 'object'">
+    <span class="property-value object">${property.value}</span>
+  </template>
+
+  <ul if.bind="property.isExpanded && property.expandedValue" class="properties">
+    <li repeat.for="property of expandedValue.properties">
+      <property-view property.bind="property"></property-view>
+    </li>
+  </ul>
 </template>

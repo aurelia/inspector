@@ -3,11 +3,41 @@ property-view {
   display: block;
 }
 
+property-view .arrow {
+  font-size: 10px;
+  color: dimgray;
+  cursor: default;
+}
+
 property-view .property-name {
   font-size: 12px;
-  color: red;
+  color: purple;
+  font-family: monospace;
+  margin-left: 2px;
 }
 
 property-view .property-value, property-view .token-colon {
   font-size: 12px;
+  color: dimgray;
+  font-family: monospace;
+}
+
+property-view .property-value.boolean {
+  color: deeppink;
+}
+
+property-view .property-value.string {
+  color: red;
+}
+
+property-view .property-value.number {
+  color: blue;
+}
+
+property-view .property-value.array {
+  color: black;
+}
+
+property-view .property-value.object {
+  color: black;
 }

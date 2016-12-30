@@ -1,9 +1,5 @@
 controller-view .category-name {
   font-size: 10px;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   margin-top: 2px;
-}
-
-controller-view .properties {
-  margin-left: 8px;
 }
