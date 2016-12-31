@@ -8,29 +8,9 @@
   </span>
   <span class="property-name">${property.name}</span><span class="token-colon">:</span>&nbsp;
   
-  <template if.bind="property.type === 'boolean'">
-    <span class="property-value boolean">${property.value}</span>
-  </template>
-  
-  <template if.bind="property.type === 'string'">
-    <span class="property-value string">"${property.value}"</span>
-  </template>
+  <span if.bind="property.type === 'string'" class="property-value ${property.type}">"${property.value}"</span>
 
-  <template if.bind="property.type === 'number'">
-    <span class="property-value number">${property.value}</span>
-  </template>
-
-  <template if.bind="property.type === 'array'">
-    <span class="property-value array">[...]</span>
-  </template>
-
-  <template if.bind="property.type === 'object'">
-    <span class="property-value object">${property.value}</span>
-  </template>
-
-  <template if.bind="property.type === 'node'">
-    <span class="property-value object">Node</span>
-  </template>
+  <span if.bind="property.type !== 'string'" class="property-value ${property.type}">${property.value}</span>
 
   <ul if.bind="property.isExpanded && property.expandedValue" class="properties">
     <div if.bind="!property.expandedValue.properties.length" class="no-properties">

@@ -42,7 +42,7 @@ property-view .property-value.array {
   color: black;
 }
 
-property-view .property-value.object {
+property-view .property-value.object, property-view .property-value.node {
   color: black;
 }
 

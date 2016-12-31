@@ -10,12 +10,17 @@ var onSelectionChanged = function() {
         let debugValue;
 
         if (value instanceof Node) {
+          debugInfo.canExpand = true;
           debugInfo.type = 'node';
-          debugInfo.value = '[node]';
+          debugInfo.value = value.constructor.name;
+          debugInfo.debugId = this.getNextDebugId();
+          this.debugValueLookup[debugInfo.debugId] = value;
         } else if (Array.isArray(value)) {
           debugInfo.canExpand = true;
           debugInfo.type = 'array';
-          debugInfo.value = '[array]';
+          debugInfo.value = `Array[${value.length}]`;
+          debugInfo.debugId = this.getNextDebugId();
+          this.debugValueLookup[debugInfo.debugId] = value;
         } else {
           debugInfo.type = typeof value;
           debugInfo.value = value;
@@ -29,7 +34,7 @@ var onSelectionChanged = function() {
           if (value.constructor) {
             debugInfo.value = value.constructor.name;
           } else {
-            debugInfo.value = '[object]';
+            debugInfo.value = 'Object';
           }
         }
 
@@ -184,6 +189,15 @@ var onSelectionChanged = function() {
       },
       expandDebugValue(id) {
         let value = this.debugValueLookup[id];
+
+        if (Array.isArray(value)) {
+          let newValue = {};
+          value.forEach((value, index) => {
+            newValue[index] = value
+          });
+          value = newValue;
+        }
+
         let debugInfo = this.convertObjectToDebugInfo(value);
         return debugInfo;
       },
@@ -219,7 +233,15 @@ export class DebugHost {
   test = {
     foo: 'message',
     bar: {
-      something: 'sdfsdfsdfsdf'
+      something: 'sdfsdfsdfsdf',
+      someArray: [
+        {
+          a: 'thing'
+        },
+        {
+          b: 'or two'
+        }
+      ]
     }
   };
   attach(consumer: IHostConsumer) {

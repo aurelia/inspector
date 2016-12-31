@@ -5898,13 +5898,18 @@ define('backend/debug-host',["require", "exports", "aurelia-dependency-injection
                     var type;
                     var debugValue;
                     if (value instanceof Node) {
+                        debugInfo.canExpand = true;
                         debugInfo.type = 'node';
-                        debugInfo.value = '[node]';
+                        debugInfo.value = value.constructor.name;
+                        debugInfo.debugId = this.getNextDebugId();
+                        this.debugValueLookup[debugInfo.debugId] = value;
                     }
                     else if (Array.isArray(value)) {
                         debugInfo.canExpand = true;
                         debugInfo.type = 'array';
-                        debugInfo.value = '[array]';
+                        debugInfo.value = "Array[" + value.length + "]";
+                        debugInfo.debugId = this.getNextDebugId();
+                        this.debugValueLookup[debugInfo.debugId] = value;
                     }
                     else {
                         debugInfo.type = typeof value;
@@ -5918,7 +5923,7 @@ define('backend/debug-host',["require", "exports", "aurelia-dependency-injection
                             debugInfo.value = value.constructor.name;
                         }
                         else {
-                            debugInfo.value = '[object]';
+                            debugInfo.value = 'Object';
                         }
                     }
                     return debugInfo;
@@ -6056,6 +6061,13 @@ define('backend/debug-host',["require", "exports", "aurelia-dependency-injection
                 },
                 expandDebugValue: function (id) {
                     var value = this.debugValueLookup[id];
+                    if (Array.isArray(value)) {
+                        var newValue_1 = {};
+                        value.forEach(function (value, index) {
+                            newValue_1[index] = value;
+                        });
+                        value = newValue_1;
+                    }
                     var debugInfo = this.convertObjectToDebugInfo(value);
                     return debugInfo;
                 },
@@ -6088,7 +6100,15 @@ define('backend/debug-host',["require", "exports", "aurelia-dependency-injection
             this.test = {
                 foo: 'message',
                 bar: {
-                    something: 'sdfsdfsdfsdf'
+                    something: 'sdfsdfsdfsdf',
+                    someArray: [
+                        {
+                            a: 'thing'
+                        },
+                        {
+                            b: 'or two'
+                        }
+                    ]
                 }
             };
         }
@@ -6267,8 +6287,8 @@ define('text!resources/elements/controller-view.css', ['module'], function(modul
 define('text!resources/elements/controller-view.html', ['module'], function(module) { module.exports = "<template bindable=\"controller\"><require from=\"./controller-view.css\"></require><div class=\"category\" if.bind=\"controller.bindables.length\"><h4 class=\"category-name\">Bindables</h4><ul class=\"properties\"><li repeat.for=\"bindable of controller.bindables\"><property-view property.bind=\"bindable\"></property-view></li></ul></div><div class=\"category\" if.bind=\"controller.properties.length\"><h4 class=\"category-name\">Properties</h4><ul class=\"properties\"><li repeat.for=\"property of controller.properties\"><property-view property.bind=\"property\"></property-view></li></ul></div></template>"; });
 define('text!resources/elements/debug-group.css', ['module'], function(module) { module.exports = "debug-group .header {\n  font-weight: normal;\n  font-size: 12px;\n  margin: 0;\n  padding: 4px;\n  background: #f4f4f4;\n  border-bottom: 1px solid rgba(0, 0, 0, .25);\n  border-top: 1px solid rgba(0, 0, 0, .25);\n}\n\ndebug-group .content { \n  margin: 4px;\n}\n"; });
 define('text!resources/elements/debug-group.html', ['module'], function(module) { module.exports = "<template><require from=\"./debug-group.css\"></require><section><h2 class=\"header\">${heading}</h2><div class=\"content\"><slot></slot></div></section></template>"; });
-define('text!resources/elements/property-view.css', ['module'], function(module) { module.exports = "property-view {\n  margin-top: 2px;\n  display: block;\n}\n\nproperty-view .arrow {\n  font-size: 10px;\n  color: dimgray;\n  cursor: default;\n}\n\nproperty-view .arrow .right {\n  margin-right: 1px;\n}\n\nproperty-view .property-name {\n  font-size: 12px;\n  color: purple;\n  font-family: monospace;\n  margin-left: 1px;\n}\n\nproperty-view .property-value, property-view .token-colon {\n  font-size: 12px;\n  color: dimgray;\n  font-family: monospace;\n}\n\nproperty-view .property-value.boolean {\n  color: deeppink;\n}\n\nproperty-view .property-value.string {\n  color: red;\n}\n\nproperty-view .property-value.number {\n  color: blue;\n}\n\nproperty-view .property-value.array {\n  color: black;\n}\n\nproperty-view .property-value.object {\n  color: black;\n}\n\nproperty-view ul.properties {\n  margin-left: 16px;\n}\n\nproperty-view .no-properties {\n  margin-top: 4px;\n  font-size: 10px;\n}\n"; });
-define('text!resources/elements/property-view.html', ['module'], function(module) { module.exports = "<template bindable=\"property\"><require from=\"./property-view.css\"></require><require from=\"../../backend/expand-value\"></require><span css=\"opacity: ${property.canExpand? 1 : 0}\" class=\"arrow\" click.trigger=\"toggleDebugValueExpansion(property)\"><span if.bind=\"property.isExpanded\" class=\"down\">▼</span> <span if.bind=\"!property.isExpanded\" class=\"right\">▶</span> </span><span class=\"property-name\">${property.name}</span><span class=\"token-colon\">:</span>&nbsp;<template if.bind=\"property.type === 'boolean'\"><span class=\"property-value boolean\">${property.value}</span></template><template if.bind=\"property.type === 'string'\"><span class=\"property-value string\">\"${property.value}\"</span></template><template if.bind=\"property.type === 'number'\"><span class=\"property-value number\">${property.value}</span></template><template if.bind=\"property.type === 'array'\"><span class=\"property-value array\">[...]</span></template><template if.bind=\"property.type === 'object'\"><span class=\"property-value object\">${property.value}</span></template><template if.bind=\"property.type === 'node'\"><span class=\"property-value object\">Node</span></template><ul if.bind=\"property.isExpanded && property.expandedValue\" class=\"properties\"><div if.bind=\"!property.expandedValue.properties.length\" class=\"no-properties\">Object has no properties.</div><li repeat.for=\"p of property.expandedValue.properties\"><property-view property.bind=\"p\"></property-view></li></ul></template>"; });
+define('text!resources/elements/property-view.css', ['module'], function(module) { module.exports = "property-view {\n  margin-top: 2px;\n  display: block;\n}\n\nproperty-view .arrow {\n  font-size: 10px;\n  color: dimgray;\n  cursor: default;\n}\n\nproperty-view .arrow .right {\n  margin-right: 1px;\n}\n\nproperty-view .property-name {\n  font-size: 12px;\n  color: purple;\n  font-family: monospace;\n  margin-left: 1px;\n}\n\nproperty-view .property-value, property-view .token-colon {\n  font-size: 12px;\n  color: dimgray;\n  font-family: monospace;\n}\n\nproperty-view .property-value.boolean {\n  color: deeppink;\n}\n\nproperty-view .property-value.string {\n  color: red;\n}\n\nproperty-view .property-value.number {\n  color: blue;\n}\n\nproperty-view .property-value.array {\n  color: black;\n}\n\nproperty-view .property-value.object, property-view .property-value.node {\n  color: black;\n}\n\nproperty-view ul.properties {\n  margin-left: 16px;\n}\n\nproperty-view .no-properties {\n  margin-top: 4px;\n  font-size: 10px;\n}\n"; });
+define('text!resources/elements/property-view.html', ['module'], function(module) { module.exports = "<template bindable=\"property\"><require from=\"./property-view.css\"></require><require from=\"../../backend/expand-value\"></require><span css=\"opacity: ${property.canExpand? 1 : 0}\" class=\"arrow\" click.trigger=\"toggleDebugValueExpansion(property)\"><span if.bind=\"property.isExpanded\" class=\"down\">▼</span> <span if.bind=\"!property.isExpanded\" class=\"right\">▶</span> </span><span class=\"property-name\">${property.name}</span><span class=\"token-colon\">:</span>&nbsp; <span if.bind=\"property.type === 'string'\" class=\"property-value ${property.type}\">\"${property.value}\"</span> <span if.bind=\"property.type !== 'string'\" class=\"property-value ${property.type}\">${property.value}</span><ul if.bind=\"property.isExpanded && property.expandedValue\" class=\"properties\"><div if.bind=\"!property.expandedValue.properties.length\" class=\"no-properties\">Object has no properties.</div><li repeat.for=\"p of property.expandedValue.properties\"><property-view property.bind=\"p\"></property-view></li></ul></template>"; });
 define('aurelia-dependency-injection',['exports', 'aurelia-metadata', 'aurelia-pal'], function (exports, _aureliaMetadata, _aureliaPal) {
   'use strict';
 
