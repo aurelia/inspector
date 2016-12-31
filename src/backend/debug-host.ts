@@ -36,6 +36,8 @@ var onSelectionChanged = function() {
           } else {
             debugInfo.value = 'Object';
           }
+        } else if (debugInfo.type === 'function') {
+          return null;
         }
 
         return debugInfo;
@@ -53,7 +55,7 @@ var onSelectionChanged = function() {
               name: x.name,
               attribute: x.attribute,
             }, viewModel[x.name]);
-          });
+          }).filter(x => x);
 
           controllerDebugInfo.properties = Object.keys(viewModel).filter(x => {
             let found = controllerDebugInfo.bindables.find(x => x.name === x);
@@ -62,7 +64,7 @@ var onSelectionChanged = function() {
             return this.setValueOnDebugInfo({
               name: x
             }, viewModel[x]);
-          });
+          }).filter(x => x);
 
           return controllerDebugInfo;
         } catch (e) {
@@ -149,7 +151,7 @@ var onSelectionChanged = function() {
             return this.setValueOnDebugInfo({
               name: x
             }, obj[x]);
-          })
+          }).filter(x => x)
         };
       },
       selectNode() {
