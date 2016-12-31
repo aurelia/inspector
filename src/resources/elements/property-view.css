@@ -45,3 +45,12 @@ property-view .property-value.array {
 property-view .property-value.object {
   color: black;
 }
+
+property-view ul.properties {
+  margin-left: 16px;
+}
+
+property-view .no-properties {
+  margin-top: 4px;
+  font-size: 10px;
+}

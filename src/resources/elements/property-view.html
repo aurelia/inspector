@@ -28,9 +28,16 @@
     <span class="property-value object">${property.value}</span>
   </template>
 
+  <template if.bind="property.type === 'node'">
+    <span class="property-value object">Node</span>
+  </template>
+
   <ul if.bind="property.isExpanded && property.expandedValue" class="properties">
-    <li repeat.for="property of expandedValue.properties">
-      <property-view property.bind="property"></property-view>
+    <div if.bind="!property.expandedValue.properties.length" class="no-properties">
+      Object has no properties.
+    </div>
+    <li repeat.for="p of property.expandedValue.properties">
+      <property-view property.bind="p"></property-view>
     </li>
   </ul>
 </template>
