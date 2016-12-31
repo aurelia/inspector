@@ -243,17 +243,21 @@ export class DebugHost {
   };
   
   attach(consumer: IHostConsumer) {
-    chrome.devtools.inspectedWindow.eval("(" + createAureliaDebugger.toString() + ")()", () => {
-      chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
-        chrome.devtools.inspectedWindow.eval("aureliaDebugger.selectNode($0)", debugObject => {
+    if (chrome && chrome.devtools) {
+      chrome.devtools.inspectedWindow.eval("(" + createAureliaDebugger.toString() + ")()", () => {
+        var code = "aureliaDebugger.selectNode($0)";
+        
+        chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
+          chrome.devtools.inspectedWindow.eval(code, debugObject => {
+            consumer.onSelectionChanged(new SelectionChanged(debugObject))
+          });
+        });
+
+        chrome.devtools.inspectedWindow.eval(code, debugObject => {
           consumer.onSelectionChanged(new SelectionChanged(debugObject))
         });
       });
-
-      chrome.devtools.inspectedWindow.eval("aureliaDebugger.selectNode($0)", debugObject => {
-        consumer.onSelectionChanged(new SelectionChanged(debugObject))
-      });
-    });
+    }
   }
 
   toggleDebugValueExpansion(debugValue) {

@@ -6112,16 +6112,19 @@ define('backend/debug-host',["require", "exports", "aurelia-dependency-injection
             };
         }
         DebugHost.prototype.attach = function (consumer) {
-            chrome.devtools.inspectedWindow.eval("(" + createAureliaDebugger.toString() + ")()", function () {
-                chrome.devtools.panels.elements.onSelectionChanged.addListener(function () {
-                    chrome.devtools.inspectedWindow.eval("aureliaDebugger.selectNode($0)", function (debugObject) {
+            if (chrome && chrome.devtools) {
+                chrome.devtools.inspectedWindow.eval("(" + createAureliaDebugger.toString() + ")()", function () {
+                    var code = "aureliaDebugger.selectNode($0)";
+                    chrome.devtools.panels.elements.onSelectionChanged.addListener(function () {
+                        chrome.devtools.inspectedWindow.eval(code, function (debugObject) {
+                            consumer.onSelectionChanged(new SelectionChanged(debugObject));
+                        });
+                    });
+                    chrome.devtools.inspectedWindow.eval(code, function (debugObject) {
                         consumer.onSelectionChanged(new SelectionChanged(debugObject));
                     });
                 });
-                chrome.devtools.inspectedWindow.eval("aureliaDebugger.selectNode($0)", function (debugObject) {
-                    consumer.onSelectionChanged(new SelectionChanged(debugObject));
-                });
-            });
+            }
         };
         DebugHost.prototype.toggleDebugValueExpansion = function (debugValue) {
             if (debugValue.canExpand) {
