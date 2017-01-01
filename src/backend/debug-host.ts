@@ -150,9 +150,11 @@ var createAureliaDebugger = function () {
       }
 
       if (value === null) {
-        //do nothing
+        debugInfo.type = 'null';
+        debugInfo.value = 'null';
       } else if (value === undefined) {
-        //do nothing
+        debugInfo.type = 'undefined';
+        debugInfo.value = 'undefined';
       } else if (debugInfo.type === 'object') {
         debugInfo.canExpand = true;
         debugInfo.debugId = this.getNextDebugId();

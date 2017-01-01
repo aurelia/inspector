@@ -13,6 +13,10 @@ property-view .arrow .right {
   margin-right: 1px;
 }
 
+property-view .property-line {
+  white-space: nowrap;
+}
+
 property-view .property-name {
   font-size: 12px;
   color: purple;
@@ -26,12 +30,17 @@ property-view .property-value, property-view .token-colon {
   font-family: monospace;
 }
 
+property-view .property-value.null, property-view .property-value.undefined {
+  color: dimgray;
+}
+
 property-view .property-value.boolean {
   color: deeppink;
 }
 
 property-view .property-value.string {
   color: red;
+  white-space: nowrap;
 }
 
 property-view .property-value.number {
