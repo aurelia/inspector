@@ -165,8 +165,6 @@ var createAureliaDebugger = function () {
         } else {
           debugInfo.value = 'Object';
         }
-      } else if (debugInfo.type === 'function') {
-        return null;
       }
 
       return debugInfo;
@@ -261,7 +259,7 @@ var createAureliaDebugger = function () {
     getNextDebugId() {
       return ++this.nextDebugId;
     },
-    expandDebugValue(id) {
+    getExpandedDebugValueForId(id) {
       let value = this.debugValueLookup[id];
 
       if (Array.isArray(value)) {
@@ -272,8 +270,7 @@ var createAureliaDebugger = function () {
         value = newValue;
       }
 
-      let debugInfo = this.convertObjectToDebugInfo(value);
-      return debugInfo;
+      return this.convertObjectToDebugInfo(value);
     },
     findOwningViewOfNode(node) {
       function moveUp(n) {
@@ -301,21 +298,6 @@ export interface IHostConsumer {
 
 @autoinject
 export class DebugHost {
-  test = {
-    foo: 'message',
-    bar: {
-      something: 'sdfsdfsdfsdf',
-      someArray: [
-        {
-          a: 'thing'
-        },
-        {
-          b: 'or two'
-        }
-      ]
-    }
-  };
-
   attach(consumer: IHostConsumer) {
     if (chrome && chrome.devtools) {
       chrome.devtools.inspectedWindow.eval("(" + createAureliaDebugger.toString() + ")()", () => {
@@ -339,7 +321,7 @@ export class DebugHost {
       debugValue.isExpanded = !debugValue.isExpanded;
 
       if (debugValue.isExpanded && !debugValue.expandedValue) {
-        let code = "aureliaDebugger.expandDebugValue(" + debugValue.debugId + ");";
+        let code = "aureliaDebugger.getExpandedDebugValueForId(" + debugValue.debugId + ");";
 
         chrome.devtools.inspectedWindow.eval(code, expandedValue => {
           debugValue.expandedValue = expandedValue;
