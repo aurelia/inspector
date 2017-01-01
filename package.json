@@ -1,12 +1,23 @@
 {
   "name": "aurelia-inspector",
-  "description": "An Aurelia client application.",
-  "version": "0.1.0",
-  "repository": {
-    "type": "???",
-    "url": "???"
+  "version": "0.2.0",
+  "description": "A Chrome plugin that adds a new inspector pane to the Elements panel, providing Aurelia-specific information about selected elements.",
+  "keywords": [
+    "aurelia",
+    "chrome",
+    "debug",
+    "plugin"
+  ],
+  "homepage": "http://aurelia.io",
+  "bugs": {
+    "url": "https://github.com/aurelia/inspector/issues"
   },
   "license": "MIT",
+  "author": "Rob Eisenberg <rob@bluespire.com> (http://robeisenberg.com/)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aurelia/inspector"
+  },
   "dependencies": {
     "aurelia-bootstrapper": "^1.0.0",
     "aurelia-animator-css": "^1.0.0",
