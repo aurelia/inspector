@@ -3,6 +3,90 @@ import { autoinject } from 'aurelia-dependency-injection';
 declare var aureliaDebugger;
 
 var createAureliaDebugger = function () {
+  function createErrorObject(e) {
+    return {
+      bindingContext: {
+        properties: [
+          {
+            name: 'Error',
+            value: e.message,
+            type: 'string'
+          }
+        ]
+      }
+    }
+  }
+
+  function findSiblingRepeaterView(node) {
+    if (!node) {
+      return null;
+    }
+
+    let current = node.nextSibling;
+
+    while (current) {
+      if (current.nodeType === 8 && current.viewSlot) {
+        let children = current.viewSlot.children;
+
+        for (let i = 0, ii = children.length; i < ii; ++i) {
+          let view = children[i];
+          let currentChild = view.firstChild
+          let lastChild = view.lastChild;
+          let nextChild;
+
+          while (currentChild) {
+            nextChild = currentChild.nextSibling;
+
+            if (currentChild === node) {
+              return view;
+            }
+
+            if (currentChild === lastChild) {
+              break;
+            }
+
+            currentChild = nextChild;
+          }
+        }
+      }
+
+      current = current.nextSibling;
+    }
+
+    return null;
+  }
+
+  function findComposingView(node) {
+    if (!node) {
+      return null;
+    }
+
+    if (node.aurelia) {
+      return node.aurelia.root.view;
+    } else if (node.au) {
+      var au = node.au;
+
+      if (au.controller) { //custom element
+        var controller = au.controller;
+        var tagName = node.tagName ? node.tagName.toLowerCase() : null;
+        var repeaterContext;
+
+        if (tagName === 'router-view') {
+          return controller.viewModel.view;
+        } else if (tagName === 'compose') {
+          return controller.viewModel.currentController.view;
+        } else if (controller['with']) {
+          return controller['with'].viewModel.view;
+        } else {
+          //node might be part of the view of the custom element itself
+          //which means it gets the controller.view as its owning view
+        }
+      }
+    }
+
+    return null;
+  }
+
   window['aureliaDebugger'] = {
     setValueOnDebugInfo(debugInfo, value) {
       let type;
@@ -25,7 +109,11 @@ var createAureliaDebugger = function () {
         debugInfo.value = value;
       }
 
-      if (debugInfo.type === 'object') {
+      if (value === null) {
+        //do nothing
+      } else if (value === undefined) {
+        //do nothing
+      } else if (debugInfo.type === 'object') {
         debugInfo.canExpand = true;
         debugInfo.debugId = this.getNextDebugId();
         this.debugValueLookup[debugInfo.debugId] = value;
@@ -70,80 +158,6 @@ var createAureliaDebugger = function () {
         return e.message;
       }
     },
-    _getRepeaterContext(node) {
-      var current = node.nextSibling;
-
-      while (current) {
-        if (current.nodeType === 8 && current.viewSlot) {
-          var children = current.viewSlot.children;
-
-          for (var i = 0, ii = children.length; i < ii; ++i) {
-            var view = children[i];
-            var currentChild = view.firstChild
-            var lastChild = view.lastChild;
-            var nextChild;
-
-            while (currentChild) {
-              nextChild = currentChild.nextSibling;
-
-              if (currentChild === node) {
-                return view.bindingContext;
-              }
-
-              if (currentChild === lastChild) {
-                break;
-              }
-
-              currentChild = nextChild;
-            }
-          }
-        }
-
-        current = current.nextSibling;
-      }
-
-      return null;
-    },
-    _getBindingContext(node) {
-      if (!node) {
-        return null;
-      }
-
-      if (node.aurelia) {
-        return node.aurelia.root.viewModel;
-      } else if (node.au) {
-        var au = node.au;
-
-        if (au.controller) { //custom element
-          var controller = au.controller;
-          var tagName = node.tagName ? node.tagName.toLowerCase() : null;
-          var repeaterContext;
-
-          if (tagName === 'router-view') {
-            return controller.viewModel.view.controller.viewModel;
-          } else if (tagName === 'compose') {
-            return controller.viewModel.currentViewModel;
-          } else if (controller['with']) {
-            return controller['with'].viewModel.value;
-          } else if (repeaterContext = this._getRepeaterContext(node)) {
-            return repeaterContext;
-          } else {
-
-          }
-        }
-      }
-
-      return this._getBindingContext(node.parentNode);
-    },
-    getBindingContext(node) {
-      var repeaterContext;
-
-      if (repeaterContext = this._getRepeaterContext(node)) {
-        return repeaterContext;
-      }
-
-      return this._getBindingContext(node.parentNode);
-    },
     convertObjectToDebugInfo(obj) {
       return {
         properties: Object.keys(obj).map(x => {
@@ -177,11 +191,25 @@ var createAureliaDebugger = function () {
           }
         }
 
-        debugInfo.bindingContext = this.convertObjectToDebugInfo(this.getBindingContext(selectedNode));
+        let owningView = this.findOwningViewOfNode(selectedNode);
+
+        
+
+        if (owningView) {
+          if (owningView.bindingContext) {
+            console.log('bindingContext', owningView.bindingContext);
+            debugInfo.bindingContext = this.convertObjectToDebugInfo(owningView.bindingContext);
+          }
+
+          if (owningView.overrideContext) {
+            console.log('overrideContext', owningView.overrideContext);
+            debugInfo.overrideContext = this.convertObjectToDebugInfo(owningView.overrideContext);
+          }
+        }
 
         return debugInfo;
       } catch (e) {
-        return this.createErrorObject(e);
+        return createErrorObject(e);
       }
     },
     getNextDebugId() {
@@ -201,18 +229,18 @@ var createAureliaDebugger = function () {
       let debugInfo = this.convertObjectToDebugInfo(value);
       return debugInfo;
     },
-    createErrorObject(e) {
-      return {
-        bindingContext: {
-          properties: [
-            {
-              name: 'Error',
-              value: e.message,
-              type: 'string'
-            }
-          ]
+    findOwningViewOfNode(node) {
+      function moveUp(node) {
+        let current = node.parentNode;
+
+        if (current) {
+          return findComposingView(current) || findSiblingRepeaterView(current) || moveUp(current);
         }
+
+        return null;
       }
+
+      return findSiblingRepeaterView(node) || moveUp(node);
     }
   }
 }
@@ -241,12 +269,12 @@ export class DebugHost {
       ]
     }
   };
-  
+
   attach(consumer: IHostConsumer) {
     if (chrome && chrome.devtools) {
       chrome.devtools.inspectedWindow.eval("(" + createAureliaDebugger.toString() + ")()", () => {
         var code = "aureliaDebugger.selectNode($0)";
-        
+
         chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
           chrome.devtools.inspectedWindow.eval(code, debugObject => {
             consumer.onSelectionChanged(new SelectionChanged(debugObject))
