@@ -5905,6 +5905,13 @@ define('backend/debug-host',["require", "exports", "aurelia-dependency-injection
                 }
             };
         }
+        function attachedOwner(node) {
+            var ownerView = node.auOwnerView;
+            if (ownerView && ownerView.viewFactory) {
+                return ownerView;
+            }
+            return null;
+        }
         function nodeIsImmediateChildOfView(view, node) {
             var currentChild = view.firstChild;
             var lastChild = view.lastChild;
@@ -5927,7 +5934,7 @@ define('backend/debug-host',["require", "exports", "aurelia-dependency-injection
             }
             var current = node.nextSibling;
             while (current) {
-                if (current.nodeType === 8 && current.viewSlot) {
+                if (current.nodeType === 8 && current.viewSlot && current.data === 'anchor') {
                     var children = current.viewSlot.children;
                     for (var i = 0, ii = children.length; i < ii; ++i) {
                         var view = children[i];
@@ -5955,8 +5962,8 @@ define('backend/debug-host',["require", "exports", "aurelia-dependency-injection
             if (node.aurelia) {
                 return node.aurelia.root.view;
             }
-            else if (node.auOwnerView) {
-                return node.auOwnerView;
+            else if (attachedOwner(node)) {
+                return attachedOwner(node);
             }
             else if (node.au) {
                 var au = node.au;
@@ -5979,7 +5986,7 @@ define('backend/debug-host',["require", "exports", "aurelia-dependency-injection
         function getDebugPropertyKeys(obj) {
             var props = [];
             for (var key in obj) {
-                if (!key.startsWith('_') && typeof obj[key] !== 'function') {
+                if (key && !key.startsWith('_') && typeof obj[key] !== 'function') {
                     props.push(key);
                 }
             }
@@ -6126,7 +6133,7 @@ define('backend/debug-host',["require", "exports", "aurelia-dependency-injection
                     }
                     return null;
                 }
-                return node.auOwnerView || findSiblingRepeaterView(node) || findImmediateControllerOwningView(node) || moveUp(node);
+                return attachedOwner(node) || findSiblingRepeaterView(node) || findImmediateControllerOwningView(node) || moveUp(node);
             }
         };
     };

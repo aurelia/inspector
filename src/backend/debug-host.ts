@@ -17,6 +17,16 @@ var createAureliaDebugger = function () {
     }
   }
 
+  function attachedOwner(node) {
+    let ownerView = node.auOwnerView;
+
+    if (ownerView && ownerView.viewFactory) {
+      return ownerView;
+    }
+
+    return null;
+  }
+
   function nodeIsImmediateChildOfView(view, node) {
     let currentChild = view.firstChild
     let lastChild = view.lastChild;
@@ -47,7 +57,7 @@ var createAureliaDebugger = function () {
     let current = node.nextSibling;
 
     while (current) {
-      if (current.nodeType === 8 && current.viewSlot) {
+      if (current.nodeType === 8 && current.viewSlot && current.data === 'anchor') {
         let children = current.viewSlot.children;
 
         for (let i = 0, ii = children.length; i < ii; ++i) {
@@ -83,8 +93,8 @@ var createAureliaDebugger = function () {
 
     if (node.aurelia) {
       return node.aurelia.root.view;
-    } else if (node.auOwnerView) {
-      return node.auOwnerView;
+    } else if (attachedOwner(node)) {
+      return attachedOwner(node);
     } else if (node.au) {
       var au = node.au;
 
@@ -109,7 +119,7 @@ var createAureliaDebugger = function () {
     let props = [];
 
     for (let key in obj) {
-      if (!key.startsWith('_') && typeof obj[key] !== 'function') {
+      if (key && !key.startsWith('_') && typeof obj[key] !== 'function') {
         props.push(key);
       }
     }
@@ -274,7 +284,7 @@ var createAureliaDebugger = function () {
         return null;
       }
 
-      return node.auOwnerView || findSiblingRepeaterView(node) || findImmediateControllerOwningView(node) || moveUp(node);
+      return attachedOwner(node) || findSiblingRepeaterView(node) || findImmediateControllerOwningView(node) || moveUp(node);
     }
   }
 }
