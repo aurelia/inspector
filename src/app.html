@@ -21,6 +21,19 @@
       </template>
     </debug-group>
 
+    <debug-group heading="Override Context">
+      <template if.bind="debugInfo.overrideContext && debugInfo.overrideContext.properties.length">
+        <ul>
+          <li repeat.for="property of debugInfo.overrideContext.properties">
+            <property-view property.bind="property"></property-view>
+          </li>
+        </ul>
+      </template>
+      <template if.bind="!debugInfo.overrideContext || !debugInfo.overrideContext.properties.length">
+        <span class="not-found">No override context found for the selected node.</span>
+      </template>
+    </debug-group>
+
     <debug-group heading="Custom Element">
       <template if.bind="debugInfo.customElement">
         <controller-view controller.bind="debugInfo.customElement"></controller-view>

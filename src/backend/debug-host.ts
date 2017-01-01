@@ -17,6 +17,28 @@ var createAureliaDebugger = function () {
     }
   }
 
+  function nodeIsImmediateChildOfView(view, node) {
+    let currentChild = view.firstChild
+    let lastChild = view.lastChild;
+    let nextChild;
+
+    while (currentChild) {
+      nextChild = currentChild.nextSibling;
+
+      if (currentChild === node) {
+        return true;
+      }
+
+      if (currentChild === lastChild) {
+        break;
+      }
+
+      currentChild = nextChild;
+    }
+
+    return false;
+  }
+
   function findSiblingRepeaterView(node) {
     if (!node) {
       return null;
@@ -30,27 +52,25 @@ var createAureliaDebugger = function () {
 
         for (let i = 0, ii = children.length; i < ii; ++i) {
           let view = children[i];
-          let currentChild = view.firstChild
-          let lastChild = view.lastChild;
-          let nextChild;
 
-          while (currentChild) {
-            nextChild = currentChild.nextSibling;
-
-            if (currentChild === node) {
-              return view;
-            }
-
-            if (currentChild === lastChild) {
-              break;
-            }
-
-            currentChild = nextChild;
+          if (nodeIsImmediateChildOfView(view, node)) {
+            return view;
           }
         }
       }
 
       current = current.nextSibling;
+    }
+
+    return null;
+  }
+
+  function findImmediateControllerOwningView(node) {
+    let parent = node.parentNode;
+
+    if (parent && parent.au && parent.au.controller
+      && parent.au.controller.view && nodeIsImmediateChildOfView(parent.au.controller.view, node)) {
+      return parent.au.controller.view;
     }
 
     return null;
@@ -63,28 +83,38 @@ var createAureliaDebugger = function () {
 
     if (node.aurelia) {
       return node.aurelia.root.view;
+    } else if (node.auOwnerView) {
+      return node.auOwnerView;
     } else if (node.au) {
       var au = node.au;
 
       if (au.controller) { //custom element
         var controller = au.controller;
         var tagName = node.tagName ? node.tagName.toLowerCase() : null;
-        var repeaterContext;
 
         if (tagName === 'router-view') {
           return controller.viewModel.view;
         } else if (tagName === 'compose') {
           return controller.viewModel.currentController.view;
-        } else if (controller['with']) {
-          return controller['with'].viewModel.view;
-        } else {
-          //node might be part of the view of the custom element itself
-          //which means it gets the controller.view as its owning view
         }
+      } else if (controller['with']) {
+        return controller['with'].viewModel.view;
       }
     }
 
     return null;
+  }
+
+  function getDebugPropertyKeys(obj) {
+    let props = [];
+
+    for (let key in obj) {
+      if (!key.startsWith('_') && typeof obj[key] !== 'function') {
+        props.push(key);
+      }
+    }
+
+    return props;
   }
 
   window['aureliaDebugger'] = {
@@ -136,35 +166,39 @@ var createAureliaDebugger = function () {
         };
 
         let viewModel = controller.viewModel;
+        let bindableKeys = {};
 
         controllerDebugInfo.bindables = controller.behavior.properties.map(x => {
+          bindableKeys[x.name] = true;
           return this.setValueOnDebugInfo({
             name: x.name,
             attribute: x.attribute,
           }, viewModel[x.name]);
-        }).filter(x => x);
+        });
 
-        controllerDebugInfo.properties = Object.keys(viewModel).filter(x => {
-          let found = controllerDebugInfo.bindables.find(x => x.name === x);
-          return !found && !x.startsWith('_');
-        }).map(x => {
-          return this.setValueOnDebugInfo({
-            name: x
-          }, viewModel[x]);
-        }).filter(x => x);
+        controllerDebugInfo.properties = getDebugPropertyKeys(viewModel)
+          .filter(x => !(x in bindableKeys))
+          .map(x => {
+            return this.setValueOnDebugInfo({
+              name: x
+            }, viewModel[x]);
+          });
 
         return controllerDebugInfo;
       } catch (e) {
-        return e.message;
+        return createErrorObject(e);
       }
     },
-    convertObjectToDebugInfo(obj) {
+    convertObjectToDebugInfo(obj, blackList) {
+      blackList = blackList || {};
       return {
-        properties: Object.keys(obj).map(x => {
-          return this.setValueOnDebugInfo({
-            name: x
-          }, obj[x]);
-        }).filter(x => x)
+        properties: getDebugPropertyKeys(obj)
+          .filter(x => !(x in blackList))
+          .map(x => {
+            return this.setValueOnDebugInfo({
+              name: x
+            }, obj[x]);
+          })
       };
     },
     selectNode(selectedNode) {
@@ -182,9 +216,10 @@ var createAureliaDebugger = function () {
           }
 
           var tagName = selectedNode.tagName ? selectedNode.tagName.toLowerCase() : null;
-          var customAttributeNames = Object.keys(au).filter(function (key) {
-            return key !== 'controller' && key !== tagName;
-          });
+          var customAttributeNames = getDebugPropertyKeys(au)
+            .filter(function (key) {
+              return key !== 'controller' && key !== tagName;
+            });
 
           if (customAttributeNames.length) {
             debugInfo.customAttributes = customAttributeNames.map(x => this.createControllerDebugInfo(au[x]));
@@ -193,17 +228,16 @@ var createAureliaDebugger = function () {
 
         let owningView = this.findOwningViewOfNode(selectedNode);
 
-        
-
         if (owningView) {
           if (owningView.bindingContext) {
-            console.log('bindingContext', owningView.bindingContext);
             debugInfo.bindingContext = this.convertObjectToDebugInfo(owningView.bindingContext);
           }
 
           if (owningView.overrideContext) {
-            console.log('overrideContext', owningView.overrideContext);
-            debugInfo.overrideContext = this.convertObjectToDebugInfo(owningView.overrideContext);
+            debugInfo.overrideContext = this.convertObjectToDebugInfo(
+              owningView.overrideContext,
+              { bindingContext: true, parentOverrideContext: true }
+              );
           }
         }
 
@@ -230,17 +264,17 @@ var createAureliaDebugger = function () {
       return debugInfo;
     },
     findOwningViewOfNode(node) {
-      function moveUp(node) {
-        let current = node.parentNode;
+      function moveUp(n) {
+        let current = n.parentNode;
 
         if (current) {
-          return findComposingView(current) || findSiblingRepeaterView(current) || moveUp(current);
+          return findComposingView(current) || findSiblingRepeaterView(current) || findImmediateControllerOwningView(current) || moveUp(current);
         }
 
         return null;
       }
 
-      return findSiblingRepeaterView(node) || moveUp(node);
+      return node.auOwnerView || findSiblingRepeaterView(node) || findImmediateControllerOwningView(node) || moveUp(node);
     }
   }
 }
