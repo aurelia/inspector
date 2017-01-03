@@ -5,6 +5,6 @@ export function configure(config: FrameworkConfiguration) {
     './elements/aurelia-logo.html',
     './elements/debug-group',
     './elements/controller-view.html',
-    './elements/property-view.html'
+    './elements/property-view'
   ]);
 }

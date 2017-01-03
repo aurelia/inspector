@@ -24,6 +24,24 @@ property-view .property-name {
   margin-left: 1px;
 }
 
+property-view .value-container {
+  position: relative;
+}
+
+property-view .property-editor {
+  font-family: monospace;
+  font-size: 12px;
+  margin: 0;
+  height: 12px;
+  outline: none;
+  border: 1px solid darkgray;
+  box-shadow: 0 0 5px rgba(0,0,0,.5);
+  position: absolute;
+  top: 4px;
+  left: 2px;
+  padding: 0 0 0 2px;
+}
+
 property-view .property-value, property-view .token-colon {
   font-size: 12px;
   color: dimgray;

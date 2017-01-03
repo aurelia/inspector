@@ -1,16 +1,17 @@
-<template bindable="property">
+<template>
   <require from="./property-view.css"></require>
-  <require from="../../backend/expand-value"></require>
   
   <span class="property-line">
-    <span css="opacity: ${property.canExpand? 1 : 0}" class="arrow" click.trigger="toggleDebugValueExpansion(property)">
+    <span css="opacity: ${property.canExpand? 1 : 0}" class="arrow" click.trigger="debugHost.toggleDebugValueExpansion(property)">
       <span if.bind="property.isExpanded" class="down">▼</span>
       <span if.bind="!property.isExpanded" class="right">▶</span>
     </span>
     <span class="property-name">${property.name}</span><span class="token-colon">:</span>&nbsp;
     
-    <span if.bind="property.type === 'string'" class="property-value ${property.type}">"${property.value}"</span>
-    <span if.bind="property.type !== 'string'" class="property-value ${property.type}">${property.value}</span>
+    <span class="value-container">
+      <span if.bind="!property.isEditing" class="property-value ${property.type}" click.trigger="beginEditing()">${property.value}</span>
+      <input if.bind="property.isEditing" class="property-editor" ref="editor"" type="text" value.one-way="property.value" keydown.trigger="onKeyDown($event)" blur.trigger="endEditing()">
+    </span>
   </span>
 
   <ul if.bind="property.isExpanded && property.expandedValue" class="properties">
