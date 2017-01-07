@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Aurelia Inspector",
   "version": "1.0",
-  "description": "Extends the Developer Tools by adding an Aurelia sidebar. The new pane displays Aurelia-specific information for the selected DOM element.",
+  "description": "A Chrome plugin adding a new inspector pane to the Elements panel, providing Aurelia-specific information about selected elements.",
   "devtools_page": "devtools.html",
   "icons": {
     "16": "images/Aurelia_Icon_Color_RGB_16x16.png",
