@@ -9,7 +9,7 @@
     <span class="property-name">${property.name}</span><span class="token-colon">:</span>&nbsp;
     
     <span class="value-container">
-      <span if.bind="!property.isEditing" class="property-value ${property.type}" click.trigger="beginEditing()">${property.value}</span>
+      <span if.bind="property.type === 'string' && !property.isEditing" class="property-value string">"</span><span if.bind="!property.isEditing" class="property-value ${property.type}" click.trigger="beginEditing()">${property.value}</span><span if.bind="property.type === 'string' && !property.isEditing" class="property-value string">"</span>      
       <input if.bind="property.isEditing" class="property-editor" ref="editor"" type="text" value.one-way="property.value" keydown.trigger="onKeyDown($event)" blur.trigger="endEditing()">
     </span>
   </span>
