@@ -11,7 +11,8 @@ import environment from './environment';
 
 export function configure(aurelia: Aurelia) {
   aurelia.use
-    .standardConfiguration()
+    .defaultBindingLanguage()
+    .defaultResources()
     .feature('resources');
 
   if (environment.debug) {

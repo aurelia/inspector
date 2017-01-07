@@ -93,10 +93,7 @@
           "aurelia-binding",
           "aurelia-bootstrapper",
           "aurelia-dependency-injection",
-          "aurelia-event-aggregator",
           "aurelia-framework",
-          "aurelia-history",
-          "aurelia-history-browser",
           "aurelia-loader",
           "aurelia-loader-default",
           "aurelia-logging",
@@ -106,8 +103,6 @@
           "aurelia-pal-browser",
           "aurelia-path",
           "aurelia-polyfills",
-          "aurelia-route-recognizer",
-          "aurelia-router",
           "aurelia-task-queue",
           "aurelia-templating",
           "aurelia-templating-binding",
@@ -116,11 +111,6 @@
             "name": "aurelia-templating-resources",
             "path": "../node_modules/aurelia-templating-resources/dist/amd",
             "main": "aurelia-templating-resources"
-          },
-          {
-            "name": "aurelia-templating-router",
-            "path": "../node_modules/aurelia-templating-router/dist/amd",
-            "main": "aurelia-templating-router"
           },
           {
             "name": "aurelia-testing",
