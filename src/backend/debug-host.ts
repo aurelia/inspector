@@ -3,6 +3,10 @@ import { autoinject } from 'aurelia-dependency-injection';
 declare var aureliaDebugger;
 
 var createAureliaDebugger = function () {
+  if (window['aureliaDebugger']) {
+    return;
+  }
+
   (function () {
     let nextDebugId = 0;
 
@@ -311,18 +315,16 @@ export interface IHostConsumer {
 export class DebugHost {
   attach(consumer: IHostConsumer) {
     if (chrome && chrome.devtools) {
-      chrome.devtools.inspectedWindow.eval("(" + createAureliaDebugger.toString() + ")()", () => {
-        var code = "aureliaDebugger.getDebugInfoForNode($0)";
+      var code = "(" + createAureliaDebugger.toString() + ")(); aureliaDebugger.getDebugInfoForNode($0)";
 
-        chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
-          chrome.devtools.inspectedWindow.eval(code, debugObject => {
-            consumer.onSelectionChanged(new SelectionChanged(debugObject))
-          });
-        });
-
+      chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
         chrome.devtools.inspectedWindow.eval(code, debugObject => {
           consumer.onSelectionChanged(new SelectionChanged(debugObject))
         });
+      });
+
+      chrome.devtools.inspectedWindow.eval(code, debugObject => {
+        consumer.onSelectionChanged(new SelectionChanged(debugObject))
       });
     }
   }

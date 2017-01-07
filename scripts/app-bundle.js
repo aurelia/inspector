@@ -5892,6 +5892,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 define('backend/debug-host',["require", "exports", "aurelia-dependency-injection"], function (require, exports, aurelia_dependency_injection_1) {
     "use strict";
     var createAureliaDebugger = function () {
+        if (window['aureliaDebugger']) {
+            return;
+        }
         (function () {
             var nextDebugId = 0;
             function getNextDebugId() {
@@ -6156,16 +6159,14 @@ define('backend/debug-host',["require", "exports", "aurelia-dependency-injection
         }
         DebugHost.prototype.attach = function (consumer) {
             if (chrome && chrome.devtools) {
-                chrome.devtools.inspectedWindow.eval("(" + createAureliaDebugger.toString() + ")()", function () {
-                    var code = "aureliaDebugger.getDebugInfoForNode($0)";
-                    chrome.devtools.panels.elements.onSelectionChanged.addListener(function () {
-                        chrome.devtools.inspectedWindow.eval(code, function (debugObject) {
-                            consumer.onSelectionChanged(new SelectionChanged(debugObject));
-                        });
-                    });
+                var code = "(" + createAureliaDebugger.toString() + ")(); aureliaDebugger.getDebugInfoForNode($0)";
+                chrome.devtools.panels.elements.onSelectionChanged.addListener(function () {
                     chrome.devtools.inspectedWindow.eval(code, function (debugObject) {
                         consumer.onSelectionChanged(new SelectionChanged(debugObject));
                     });
+                });
+                chrome.devtools.inspectedWindow.eval(code, function (debugObject) {
+                    consumer.onSelectionChanged(new SelectionChanged(debugObject));
                 });
             }
         };
