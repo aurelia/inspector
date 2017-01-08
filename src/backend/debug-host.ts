@@ -19,9 +19,10 @@ var createAureliaDebugger = function () {
         bindingContext: {
           properties: [
             {
-              name: 'Error',
+              name: 'Debugger Error',
               value: e.message,
-              type: 'string'
+              type: 'string',
+              canEdit: false
             }
           ]
         }
@@ -140,46 +141,56 @@ var createAureliaDebugger = function () {
 
     window['aureliaDebugger'] = {
       setValueOnDebugInfo(debugInfo, value, instance) {
-        let type;
-        let debugValue;
+        try {
+          let expandableValue:any;
 
-        if (value instanceof Node) {
-          debugInfo.canExpand = true;
-          debugInfo.type = 'node';
-          debugInfo.value = value.constructor.name;
-        } else if (Array.isArray(value)) {
-          debugInfo.canExpand = true;
-          debugInfo.type = 'array';
-          debugInfo.value = `Array[${value.length}]`;
-        } else {
-          debugInfo.type = typeof value;
-          debugInfo.value = value;
-        }
-
-        if (value === null) {
-          debugInfo.type = 'null';
-          debugInfo.value = 'null';
-        } else if (value === undefined) {
-          debugInfo.type = 'undefined';
-          debugInfo.value = 'undefined';
-        } else if (debugInfo.type === 'object') {
-          debugInfo.canExpand = true;
-
-          if (value.constructor) {
+          if (value instanceof Node) {
+            debugInfo.canExpand = true;
+            debugInfo.type = 'node';
             debugInfo.value = value.constructor.name;
+            expandableValue = value;
+          } else if (Array.isArray(value)) {
+            debugInfo.canExpand = true;
+            debugInfo.type = 'array';
+            debugInfo.value = `Array[${value.length}]`;
+            expandableValue = value;
           } else {
-            debugInfo.value = 'Object';
+            debugInfo.type = typeof value;
+            debugInfo.value = value;
           }
+
+          if (value === null) {
+            debugInfo.type = 'null';
+            debugInfo.value = 'null';
+          } else if (value === undefined) {
+            debugInfo.type = 'undefined';
+            debugInfo.value = 'undefined';
+          } else if (debugInfo.type === 'object') {
+            debugInfo.canExpand = true;
+            expandableValue = value;
+
+            if (value.constructor) {
+              debugInfo.value = value.constructor.name;
+            } else {
+              debugInfo.value = 'Object';
+            }
+          }
+
+          if (debugInfo.type === 'string' || debugInfo.type === 'number' || debugInfo.type === 'boolean') {
+            debugInfo.canEdit = true;
+          }
+
+          debugInfo.debugId = debugInfo.debugId || getNextDebugId();
+
+          this.debugValueLookup[debugInfo.debugId] = Object.assign({
+            instance: instance,
+            expandableValue: expandableValue
+          }, debugInfo);
+
+          return debugInfo;
+        } catch(e) {
+          return createErrorObject(e);
         }
-
-        if (debugInfo.type === 'string' || debugInfo.type === 'number' || debugInfo.type === 'boolean') {
-          debugInfo.canEdit = true;
-        }
-
-        debugInfo.debugId = debugInfo.debugId || getNextDebugId();
-        this.debugValueLookup[debugInfo.debugId] = Object.assign({instance: instance}, debugInfo);
-
-        return debugInfo;
       },
       createControllerDebugInfo(controller) {
         try {
@@ -269,7 +280,7 @@ var createAureliaDebugger = function () {
         }
       },
       getExpandedDebugValueForId(id) {
-        let value = this.debugValueLookup[id];
+        let value = this.debugValueLookup[id].expandableValue;
 
         if (Array.isArray(value)) {
           let newValue = {};
