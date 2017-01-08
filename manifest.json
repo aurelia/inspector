@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Aurelia Inspector",
-  "version": "1.1",
+  "version": "1.1.1",
   "description": "A Chrome plugin adding a new inspector pane to the Elements panel, providing Aurelia-specific information about selected elements.",
   "devtools_page": "devtools.html",
   "icons": {
