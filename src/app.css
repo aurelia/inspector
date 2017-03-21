@@ -5,6 +5,10 @@
   text-align: center;
 }
 
+.dark .app-header {
+  background: #2a2a2a;
+}
+
 .logo-badge {
   position: relative;
   top: -7px;
@@ -18,12 +22,19 @@
   font-size: 10px;
 }
 
+.dark .not-found {
+  color: #989898;
+}
+
 .custom-attribute {
   margin-bottom: 4px;
 }
 
 .custom-attribute .attribute-name {
   color: saddlebrown;
+}
+.dark .custom-attribute .attribute-name {
+  color: #ef9565;
 }
 
 .custom-attribute .block-token {

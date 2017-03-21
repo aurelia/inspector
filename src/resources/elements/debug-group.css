@@ -8,6 +8,13 @@ debug-group .header {
   border-top: 1px solid rgba(0, 0, 0, .25);
 }
 
+.dark debug-group .header {
+  color: #989898;
+  background: #2a2a2a;
+  border-bottom: 1px solid #5c5c5c;
+  border-top: 1px solid #3d3d3d;
+}
+
 debug-group .content { 
   margin: 4px;
 }

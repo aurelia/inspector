@@ -24,6 +24,9 @@ property-view .property-name {
   margin-left: 1px;
 }
 
+.dark property-view .property-name {
+  color: #34c7bb;
+}
 property-view .value-container {
   position: relative;
 }
@@ -60,17 +63,32 @@ property-view .property-value.string {
   color: red;
   white-space: nowrap;
 }
+.dark property-view .property-value.string {
+  color:#cbcbcb;
+}
 
 property-view .property-value.number {
   color: blue;
+}
+
+.dark property-view .property-value.number {
+  color: #59a6ca;
 }
 
 property-view .property-value.array {
   color: black;
 }
 
+.dark property-view .property-value.array {
+  color: #cbcbcb;
+}
+
 property-view .property-value.object, property-view .property-value.node {
   color: black;
+}
+
+.dark property-view .property-value.object, property-view .property-value.node {
+  color: #cbcbcb;
 }
 
 property-view ul.properties {
@@ -80,4 +98,8 @@ property-view ul.properties {
 property-view .no-properties {
   margin-top: 4px;
   font-size: 10px;
+}
+
+.dark property-view .no-properties {
+  color: #989898;
 }
