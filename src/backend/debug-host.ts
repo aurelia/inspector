@@ -118,9 +118,9 @@ var createAureliaDebugger = function () {
             return controller.viewModel.view;
           } else if (tagName === 'compose') {
             return controller.viewModel.currentController.view;
+          } else if (controller['with']) {
+            return controller['with'].viewModel.view;
           }
-        } else if (controller['with']) {
-          return controller['with'].viewModel.view;
         }
       }
 
