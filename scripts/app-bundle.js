@@ -5985,9 +5985,9 @@ define('backend/debug-host',["require", "exports", "aurelia-dependency-injection
                         else if (tagName === 'compose') {
                             return controller.viewModel.currentController.view;
                         }
-                    }
-                    else if (controller['with']) {
-                        return controller['with'].viewModel.view;
+                        else if (controller['with']) {
+                            return controller['with'].viewModel.view;
+                        }
                     }
                 }
                 return null;
@@ -6370,16 +6370,16 @@ define('resources/elements/property-view',["require", "exports", "aurelia-depend
     exports.PropertyView = PropertyView;
 });
 
-define('text!app.css', ['module'], function(module) { module.exports = ".app-header {\n  background: #f4f4f4;\n  padding: 0;\n  padding: 5px 0 0 0;\n  text-align: center;\n}\n\n.dark .app-header {\n  background: #2a2a2a;\n}\n\n.logo-badge {\n  position: relative;\n  top: -7px;\n  font-weight: 100;\n  font-size: 16px;\n  color: #BB79A8;\n}\n\n.not-found {\n  font-style: italic;\n  font-size: 10px;\n}\n\n.dark .not-found {\n  color: #989898;\n}\n\n.custom-attribute {\n  margin-bottom: 4px;\n}\n\n.custom-attribute .attribute-name {\n  color: saddlebrown;\n}\n.dark .custom-attribute .attribute-name {\n  color: #ef9565;\n}\n\n.custom-attribute .block-token {\n  color: gray;\n}\n\n.custom-attribute .attribute-name, .custom-attribute .block-token {\n  font-size: 12px;\n  display: inline;\n  font-family: monospace;\n}\n\n.custom-attribute controller-view {\n  margin-left: 8px;\n  display: block;\n}\n"; });
 define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"./reset.css\"></require><require from=\"./app.css\"></require><div class=\"${isDarkTheme ? 'dark' : ''}\"><h1 class=\"app-header\"><aurelia-logo></aurelia-logo><span class=\"logo-badge\">INSPECTOR</span></h1><main><debug-group heading=\"Binding Context\" show.bind=\"true\"><template if.bind=\"debugInfo.bindingContext\"><ul><li repeat.for=\"property of debugInfo.bindingContext.properties\"><property-view property.bind=\"property\"></property-view></li></ul></template><template if.bind=\"!debugInfo.bindingContext\"><span class=\"not-found\">No binding context found for the selected node.</span></template></debug-group><debug-group heading=\"Override Context\"><template if.bind=\"debugInfo.overrideContext && debugInfo.overrideContext.properties.length\"><ul><li repeat.for=\"property of debugInfo.overrideContext.properties\"><property-view property.bind=\"property\"></property-view></li></ul></template><template if.bind=\"!debugInfo.overrideContext || !debugInfo.overrideContext.properties.length\"><span class=\"not-found\">No override context found for the selected node.</span></template></debug-group><debug-group heading=\"Custom Element\"><template if.bind=\"debugInfo.customElement\"><controller-view controller.bind=\"debugInfo.customElement\"></controller-view></template><template if.bind=\"!debugInfo.customElement\"><span class=\"not-found\">The selected node is not a custom element.</span></template></debug-group><debug-group heading=\"Custom Attributes\"><template if.bind=\"debugInfo.customAttributes\"><ul><li repeat.for=\"customAttribute of debugInfo.customAttributes\" class=\"custom-attribute\"><h3 class=\"attribute-name\">${customAttribute.name}</h3>&nbsp;<span class=\"block-token\">{</span><controller-view controller.bind=\"customAttribute\"></controller-view><span class=\"block-token\">}</span></li></ul></template><template if.bind=\"!debugInfo.customAttributes\"><span class=\"not-found\">No custom attributes found on the selected node.</span></template></debug-group></main></div></template>"; });
-define('text!reset.css', ['module'], function(module) { module.exports = "/* http://meyerweb.com/eric/tools/css/reset/\n   v2.0 | 20110126\n   License: none (public domain)\n*/\n\nhtml, body, div, span, applet, object, iframe,\nh1, h2, h3, h4, h5, h6, p, blockquote, pre,\na, abbr, acronym, address, big, cite, code,\ndel, dfn, em, img, ins, kbd, q, s, samp,\nsmall, strike, strong, sub, sup, tt, var,\nb, u, i, center,\ndl, dt, dd, ol, ul, li,\nfieldset, form, label, legend,\ntable, caption, tbody, tfoot, thead, tr, th, td,\narticle, aside, canvas, details, embed,\nfigure, figcaption, footer, header, hgroup,\nmenu, nav, output, ruby, section, summary,\ntime, mark, audio, video {\n\tmargin: 0;\n\tpadding: 0;\n\tborder: 0;\n\tfont-size: 100%;\n\tfont: inherit;\n\tvertical-align: baseline;\n}\n/* HTML5 display-role reset for older browsers */\narticle, aside, details, figcaption, figure,\nfooter, header, hgroup, menu, nav, section {\n\tdisplay: block;\n}\nbody {\n\tline-height: 1;\n}\nol, ul {\n\tlist-style: none;\n}\nblockquote, q {\n\tquotes: none;\n}\nblockquote:before, blockquote:after,\nq:before, q:after {\n\tcontent: '';\n\tcontent: none;\n}\ntable {\n\tborder-collapse: collapse;\n\tborder-spacing: 0;\n}\n\n/*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */\n\n/* Document\n   ========================================================================== */\n\n/**\n * 1. Change the default font family in all browsers (opinionated).\n * 2. Correct the line height in all browsers.\n * 3. Prevent adjustments of font size after orientation changes in\n *    IE on Windows Phone and in iOS.\n */\n\nhtml {\n  font-family: sans-serif; /* 1 */\n  line-height: 1.15; /* 2 */\n  -ms-text-size-adjust: 100%; /* 3 */\n  -webkit-text-size-adjust: 100%; /* 3 */\n}\n\n/* Forms\n   ========================================================================== */\n\n/**\n * 1. Change the font styles in all browsers (opinionated).\n * 2. Remove the margin in Firefox and Safari.\n */\n\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: sans-serif; /* 1 */\n  font-size: 100%; /* 1 */\n  line-height: 1.15; /* 1 */\n  margin: 0; /* 2 */\n}\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\n\nbutton,\ninput { /* 1 */\n  overflow: visible;\n}\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\n\nbutton,\nselect { /* 1 */\n  text-transform: none;\n}\n\n/**\n * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`\n *    controls in Android 4.\n * 2. Correct the inability to style clickable types in iOS and Safari.\n */\n\nbutton,\nhtml [type=\"button\"], /* 1 */\n[type=\"reset\"],\n[type=\"submit\"] {\n  -webkit-appearance: button; /* 2 */\n}\n\n/**\n * Remove the inner border and padding in Firefox.\n */\n\nbutton::-moz-focus-inner,\n[type=\"button\"]::-moz-focus-inner,\n[type=\"reset\"]::-moz-focus-inner,\n[type=\"submit\"]::-moz-focus-inner {\n  border-style: none;\n  padding: 0;\n}\n\n/**\n * Restore the focus styles unset by the previous rule.\n */\n\nbutton:-moz-focusring,\n[type=\"button\"]:-moz-focusring,\n[type=\"reset\"]:-moz-focusring,\n[type=\"submit\"]:-moz-focusring {\n  outline: 1px dotted ButtonText;\n}\n\n/**\n * Change the border, margin, and padding in all browsers (opinionated).\n */\n\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em;\n}\n\n/**\n * 1. Correct the text wrapping in Edge and IE.\n * 2. Correct the color inheritance from `fieldset` elements in IE.\n * 3. Remove the padding so developers are not caught out when they zero out\n *    `fieldset` elements in all browsers.\n */\n\nlegend {\n  box-sizing: border-box; /* 1 */\n  color: inherit; /* 2 */\n  display: table; /* 1 */\n  max-width: 100%; /* 1 */\n  padding: 0; /* 3 */\n  white-space: normal; /* 1 */\n}\n\n/**\n * 1. Add the correct display in IE 9-.\n * 2. Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\n\nprogress {\n  display: inline-block; /* 1 */\n  vertical-align: baseline; /* 2 */\n}\n\n/**\n * Remove the default vertical scrollbar in IE.\n */\n\ntextarea {\n  overflow: auto;\n}\n\n/**\n * 1. Add the correct box sizing in IE 10-.\n * 2. Remove the padding in IE 10-.\n */\n\n[type=\"checkbox\"],\n[type=\"radio\"] {\n  box-sizing: border-box; /* 1 */\n  padding: 0; /* 2 */\n}\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto;\n}\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n\n[type=\"search\"] {\n  -webkit-appearance: textfield; /* 1 */\n  outline-offset: -2px; /* 2 */\n}\n\n/**\n * Remove the inner padding and cancel buttons in Chrome and Safari on macOS.\n */\n\n[type=\"search\"]::-webkit-search-cancel-button,\n[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n\n::-webkit-file-upload-button {\n  -webkit-appearance: button; /* 1 */\n  font: inherit; /* 2 */\n}\n"; });
+define('text!app.css', ['module'], function(module) { module.exports = ".app-header {\n  background: #f4f4f4;\n  padding: 0;\n  padding: 5px 0 0 0;\n  text-align: center;\n}\n\n.dark .app-header {\n  background: #2a2a2a;\n}\n\n.logo-badge {\n  position: relative;\n  top: -7px;\n  font-weight: 100;\n  font-size: 16px;\n  color: #BB79A8;\n}\n\n.not-found {\n  font-style: italic;\n  font-size: 10px;\n}\n\n.dark .not-found {\n  color: #989898;\n}\n\n.custom-attribute {\n  margin-bottom: 4px;\n}\n\n.custom-attribute .attribute-name {\n  color: saddlebrown;\n}\n.dark .custom-attribute .attribute-name {\n  color: #ef9565;\n}\n\n.custom-attribute .block-token {\n  color: gray;\n}\n\n.custom-attribute .attribute-name, .custom-attribute .block-token {\n  font-size: 12px;\n  display: inline;\n  font-family: monospace;\n}\n\n.custom-attribute controller-view {\n  margin-left: 8px;\n  display: block;\n}\n"; });
 define('text!resources/elements/aurelia-logo.html', ['module'], function(module) { module.exports = "<template><svg height=\"28px\" viewBox=\"315 19 140 41\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><defs><linearGradient x1=\"-388.147851%\" y1=\"-144.177425%\" x2=\"237.683809%\" y2=\"430.405754%\" id=\"linearGradient-1\"><stop stop-color=\"#C06FBB\" offset=\"0%\"></stop><stop stop-color=\"#6E4D9B\" offset=\"100%\"></stop></linearGradient><linearGradient x1=\"72.9454854%\" y1=\"84.4240777%\" x2=\"-97.0517904%\" y2=\"-147.696591%\" id=\"linearGradient-2\"><stop stop-color=\"#6E4D9B\" offset=\"0%\"></stop><stop stop-color=\"#77327A\" offset=\"14%\"></stop><stop stop-color=\"#B31777\" offset=\"29%\"></stop><stop stop-color=\"#CD0F7E\" offset=\"84%\"></stop><stop stop-color=\"#ED2C89\" offset=\"100%\"></stop></linearGradient><linearGradient x1=\"-283.884079%\" y1=\"-693.599872%\" x2=\"287.537417%\" y2=\"101.70976%\" id=\"linearGradient-3\"><stop stop-color=\"#C06FBB\" offset=\"0%\"></stop><stop stop-color=\"#6E4D9B\" offset=\"100%\"></stop></linearGradient><linearGradient x1=\"-821.186214%\" y1=\"-469.047862%\" x2=\"101.985142%\" y2=\"288.23598%\" id=\"linearGradient-4\"><stop stop-color=\"#C06FBB\" offset=\"0%\"></stop><stop stop-color=\"#6E4D9B\" offset=\"100%\"></stop></linearGradient><linearGradient x1=\"-140.359373%\" y1=\"-230.925718%\" x2=\"419.012316%\" y2=\"261.976742%\" id=\"linearGradient-5\"><stop stop-color=\"#C06FBB\" offset=\"0%\"></stop><stop stop-color=\"#6E4D9B\" offset=\"100%\"></stop></linearGradient><linearGradient x1=\"191.083716%\" y1=\"253.952517%\" x2=\"20.3577022%\" y2=\"20.4029283%\" id=\"linearGradient-6\"><stop stop-color=\"#6E4D9B\" offset=\"0%\"></stop><stop stop-color=\"#77327A\" offset=\"14%\"></stop><stop stop-color=\"#B31777\" offset=\"29%\"></stop><stop stop-color=\"#CD0F7E\" offset=\"84%\"></stop><stop stop-color=\"#ED2C89\" offset=\"100%\"></stop></linearGradient><linearGradient x1=\"-388.094004%\" y1=\"-173.850055%\" x2=\"237.674802%\" y2=\"518.990225%\" id=\"linearGradient-7\"><stop stop-color=\"#C06FBB\" offset=\"0%\"></stop><stop stop-color=\"#6E4D9B\" offset=\"100%\"></stop></linearGradient><linearGradient x1=\"11.1884561%\" y1=\"89.6525993%\" x2=\"90.145125%\" y2=\"11.5773982%\" id=\"linearGradient-8\"><stop stop-color=\"#6E4D9B\" offset=\"0%\"></stop><stop stop-color=\"#77327A\" offset=\"14%\"></stop><stop stop-color=\"#B31777\" offset=\"53%\"></stop><stop stop-color=\"#CD0F7E\" offset=\"79%\"></stop><stop stop-color=\"#ED2C89\" offset=\"100%\"></stop></linearGradient><rect id=\"path-9\" x=\"0.627498256\" y=\"0\" width=\"34\" height=\"16\" rx=\"2\"></rect><filter x=\"-50%\" y=\"-50%\" width=\"200%\" height=\"200%\" filterUnits=\"objectBoundingBox\" id=\"filter-10\"><feOffset dx=\"0\" dy=\"1\" in=\"SourceAlpha\" result=\"shadowOffsetOuter1\"></feOffset><feColorMatrix values=\"0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.15 0\" type=\"matrix\" in=\"shadowOffsetOuter1\"></feColorMatrix></filter></defs><g id=\"Group-3\" stroke=\"none\" stroke-width=\"1\" fill=\"none\" fill-rule=\"evenodd\" transform=\"translate(317.000000, 21.000000)\"><g id=\"Icon\" transform=\"translate(18.821436, 18.821436) rotate(11.283864) translate(-18.821436, -18.821436) translate(2.821436, 2.821436)\"><g id=\"Group\" transform=\"translate(16.062217, 4.314649) rotate(-11.283864) translate(-16.062217, -4.314649) translate(12.909354, 0.852682)\" fill=\"url(#linearGradient-1)\"><polygon id=\"Shape\" points=\"6.24514134 4.78196568 3.21344731 6.8053618 0.0902584276 2.12490594 3.12195246 0.101509821\"></polygon></g><g id=\"Group\" transform=\"translate(24.576671, 23.606062) rotate(-11.283864) translate(-24.576671, -23.606062) translate(18.394587, 16.929411)\" fill=\"url(#linearGradient-2)\"><polygon id=\"Shape\" points=\"7.16404632 1.47319064 12.3440146 9.23541541 6.17342916 13.3533016 0.993460912 5.5909532 0.0897638609 4.23695315 6.26047291 0.119066939\"></polygon></g><g id=\"Group\" transform=\"translate(16.064001, 27.069671) rotate(-11.283864) translate(-16.064001, -27.069671) translate(12.602034, 23.854988)\" fill=\"url(#linearGradient-3)\"><polygon id=\"Shape\" points=\"5.69777962 1.46663763 6.83825049 3.17561295 2.14147393 6.30992958 0.0973060035 3.24683056 1.12340832 2.56210293 4.79420621 0.11251393\"></polygon></g><g id=\"Group\" transform=\"translate(27.417287, 15.726712) rotate(-11.283864) translate(-27.417287, -15.726712) translate(24.820812, 13.130236)\" fill=\"url(#linearGradient-4)\"><path d=\"M1.81703815,0.894671208 L3.13444027,0.0155788519 L5.17848455,3.07867787 L2.14641959,5.10207399 L1.00594872,3.39309867 L2.72061156,2.24879491 L1.81703815,0.894671208 L1.81703815,0.894671208 Z M1.00594872,3.39309867 L0.102375312,2.03897497 L1.81703815,0.894671208 L2.72061156,2.24879491 L1.00594872,3.39309867 L1.00594872,3.39309867 Z\" id=\"Shape\"></path></g><g id=\"Group\" transform=\"translate(4.721041, 15.716385) rotate(-11.283864) translate(-4.721041, -15.716385) translate(0.764507, 11.759851)\" fill=\"url(#linearGradient-5)\"><polygon id=\"Shape\" points=\"4.17241219 7.1450055 3.14643351 7.82973313 0.0229973528 3.14927727 4.71977391 0.0149606435 6.90909717 3.29579267 3.23842293 5.74538166 6.90909717 3.29579267 7.84321007 4.69554014\"></polygon></g><g id=\"Group\" transform=\"translate(8.822560, 7.837609) rotate(-11.283864) translate(-8.822560, -7.837609) translate(2.640476, 1.160958)\" fill=\"url(#linearGradient-6)\"><polygon id=\"Shape\" points=\"11.3428879 7.75332257 12.2768771 9.15307005 6.10616809 13.2709563 5.17217883 11.8712088 0.0406781133 4.18168531 6.21138716 0.0637991077\"></polygon></g><g id=\"Group\" transform=\"translate(16.122857, 4.300703) rotate(-11.283864) translate(-16.122857, -4.300703) translate(12.969994, 0.900557)\" fill=\"url(#linearGradient-7)\"><polygon id=\"Shape\" points=\"4.86604202 5.6013391 3.15137918 6.74551923 2.21726628 5.34589539 0.0279430201 2.06506337 3.06000798 0.0416672467 6.18344414 4.72212311\"></polygon></g><g id=\"Group\" transform=\"translate(15.822071, 25.857155) rotate(-11.283864) translate(-15.822071, -25.857155) translate(13.472879, 23.878888)\" fill=\"#714896\"><polygon id=\"Shape\" points=\"0.914330236 3.91622662 0.0106331846 2.56210293 3.68143107 0.11251393 4.58500448 1.46663763\"></polygon></g><g id=\"Group\" transform=\"translate(26.180721, 15.532164) rotate(-11.283864) translate(-26.180721, -15.532164) translate(24.758842, 14.233926)\" fill=\"#6F4795\"><polygon id=\"Shape\" points=\"1.00594872 2.5276069 0.102375312 1.1734832 1.81703815 0.0291794369 2.72061156 1.38330313\"></polygon></g><g id=\"Group\" transform=\"translate(6.539242, 16.614393) rotate(-11.283864) translate(-6.539242, -16.614393) translate(4.190050, 14.636126)\" fill=\"#88519F\"><polygon id=\"Shape\" points=\"0.957728466 3.93032178 0.0237392029 2.53069794 3.69441345 0.0811089432 4.62852635 1.48085642\"></polygon></g><g id=\"Group\" transform=\"translate(16.885795, 6.228777) rotate(-11.283864) translate(-16.885795, -6.228777) translate(15.463916, 4.868718)\" fill=\"#85509E\"><polygon id=\"Shape\" points=\"1.04947059 2.66534373 0.115357689 1.26571989 1.83014417 0.121416131 2.76413343 1.52116361\"></polygon></g><g id=\"Group\" transform=\"translate(21.280404, 20.355313) rotate(-11.283864) translate(-21.280404, -20.355313) translate(17.694795, 17.511554)\" fill=\"#8D166A\"><polygon id=\"Shape\" points=\"7.16404632 1.47319064 0.993460912 5.5909532 0.0897638609 4.23695315 6.26047291 0.119066939\"></polygon></g><g id=\"Group\" transform=\"translate(12.058201, 11.100454) rotate(-11.283864) translate(-12.058201, -11.100454) translate(8.410771, 8.256696)\" fill=\"#A70D6F\"><polygon id=\"Shape\" points=\"6.27357893 0.0875383106 7.20756819 1.48728579 1.03685914 5.605172 0.102869879 4.20542452\"></polygon></g><g id=\"Group\" transform=\"translate(1.853411, 10.678267) rotate(45.000000) translate(-1.853411, -10.678267) translate(0.797906, 9.622762)\" fill=\"#9E61AD\"><rect id=\"Rectangle-path\" x=\"1.66662571e-15\" y=\"0\" width=\"2.0982715\" height=\"2.0982715\"></rect></g><g id=\"Group\" transform=\"translate(12.115669, 29.966366) rotate(45.000000) translate(-12.115669, -29.966366) translate(11.060163, 28.910860)\" fill=\"#8053A3\"><rect id=\"Rectangle-path\" x=\"1.66662571e-15\" y=\"0\" width=\"2.0982715\" height=\"2.0982715\"></rect></g><g id=\"Group\" transform=\"translate(16.641954, 16.427437) rotate(0.000000) translate(-16.641954, -16.427437) translate(1.422442, 1.207924)\" fill=\"url(#linearGradient-8)\"><polygon id=\"Shape\" points=\"6.53446157 29.8878978 0.012982374 23.3175801 23.2186668 0.0630572451 29.9596099 6.46398583\"></polygon></g></g><g id=\"Aurelia-+-Type-something\" transform=\"translate(38.131960, 3.021427)\"><g id=\"Aurelia\" transform=\"translate(0.929505, 0.290297)\"><g id=\"A\" transform=\"translate(0.076673, 8.413465)\" fill=\"#ED2C88\"><path d=\"M8.79524752,16.5403564 C8.91089109,16.5398812 9.02811881,16.5376634 9.14376238,16.5325941 C9.38930693,16.5216634 9.63326733,16.4993267 9.87722772,16.4652673 C10.5853465,16.3659406 11.2792079,16.167604 11.9334653,15.8765941 C12.7429703,15.5166733 13.4891089,15.0162376 14.1306931,14.4050693 C14.7358416,13.8271683 15.2475248,13.1512079 15.6388119,12.4104554 C15.969901,11.7821782 16.2138614,11.1084356 16.3611881,10.4133069 C16.540198,9.56356436 16.5750495,8.68324752 16.4657426,7.82178218 C16.3643564,7.03271287 16.1425743,6.26043564 15.8051485,5.53964356 C15.4186139,4.70954455 14.8815842,3.95025743 14.230495,3.30645545 C13.5445545,2.62922772 12.7334653,2.08110891 11.8479208,1.70011881 C11.3679208,1.49354455 10.8657426,1.33607921 10.3540594,1.23136634 C9.87405941,1.13314851 9.38455446,1.0810297 8.8950495,1.07485149 C8.41821782,1.06883168 7.94138614,1.10590099 7.47247525,1.18669307 C6.94019802,1.27841584 6.41742574,1.42653465 5.91524752,1.62788119 C5.03445545,1.98130693 4.22178218,2.49916832 3.52633663,3.14582178 C2.84514851,3.78011881 2.27960396,4.53687129 1.86455446,5.37061386 C1.51287129,6.08079208 1.27049505,6.8449901 1.15009901,7.6289901 C1.0170297,8.50407921 1.03287129,9.40229703 1.20079208,10.2718416 C1.3370297,10.9859802 1.57623762,11.6801584 1.90732673,12.3274455 C2.28910891,13.0731089 2.79287129,13.7552475 3.39326733,14.3405941 C4.01425743,14.9482772 4.73821782,15.450297 5.52712871,15.8181386 C6.15920792,16.1134257 6.83247525,16.321901 7.52,16.4359604 C7.76079208,16.4758812 8.00475248,16.504396 8.24871287,16.5213465 C8.38019802,16.5305347 8.51168317,16.5359208 8.64475248,16.5389307 C8.69544554,16.5397228 8.74455446,16.540198 8.79524752,16.5403564 L8.79524752,16.5403564 Z M16.8538614,12.199604 C16.769901,12.3988911 16.6780198,12.5950099 16.579802,12.7874851 C16.1330693,13.6613069 15.5374257,14.4579802 14.8261386,15.1353663 C14.1275248,15.8018218 13.3180198,16.3518416 12.440396,16.7550099 C11.7053465,17.0924356 10.9243564,17.3265743 10.1259406,17.4487129 C9.85188119,17.4905347 9.57623762,17.5193663 9.2990099,17.5350495 C9.16910891,17.542495 9.03762376,17.5466139 8.90772277,17.5486733 C8.86970297,17.5491485 8.83168317,17.5493069 8.79524752,17.5494653 C8.66376238,17.5489901 8.53227723,17.5466139 8.40079208,17.5407525 C8.12356436,17.528396 7.84792079,17.5030495 7.57227723,17.4647129 C6.77069307,17.352396 5.9849505,17.1277624 5.24514851,16.7987327 C4.34693069,16.3988911 3.51683168,15.8460198 2.80079208,15.1714851 C2.07366337,14.4861782 1.46534653,13.6768317 1.00910891,12.7874851 C0.641584158,12.0712871 0.375445545,11.3045545 0.218613861,10.5151683 C0.0316831683,9.57037624 0.00316831683,8.59453465 0.12990099,7.63992079 C0.247128713,6.76625743 0.495841584,5.91128713 0.86970297,5.11271287 C1.31485149,4.15857426 1.93425743,3.28760396 2.68831683,2.55192079 C3.46613861,1.79073267 4.38811881,1.17671287 5.39089109,0.752316832 C5.92,0.528633663 6.47128713,0.35770297 7.03366337,0.242693069 C7.59445545,0.128 8.16633663,0.0687524752 8.73821782,0.0652673267 C9.31168317,0.0616237624 9.88514851,0.113584158 10.4491089,0.221465347 C11.0130693,0.329663366 11.5675248,0.493940594 12.099802,0.711287129 C13.1089109,1.12364356 14.0372277,1.72689109 14.8261386,2.4790495 C15.5754455,3.1930297 16.1964356,4.03960396 16.6510891,4.96918812 C16.7223762,5.11588119 16.790495,5.26447525 16.8538614,5.4149703 L16.8538614,0.0944158416 L17.8439604,0.0944158416 L17.8439604,17.5201584 L16.8538614,17.5201584 L16.8538614,12.199604 L16.8538614,12.199604 Z\" id=\"Shape\"></path></g><g id=\"U\" transform=\"translate(20.353901, 8.413465)\" fill=\"#CD0F7E\"><path d=\"M16.5370297,12.8188515 C16.1710891,13.5234851 15.7116832,14.1790099 15.1714851,14.761505 C14.710495,15.2605149 14.1893069,15.7056634 13.6253465,16.0845941 C13.0106931,16.4967921 12.3421782,16.8299406 11.6435644,17.0724752 C11.0637624,17.2736634 10.4617822,17.4122772 9.85188119,17.4859406 C9.64910891,17.510495 9.44792079,17.5277624 9.24356436,17.5380594 C9.13108911,17.5437624 9.02019802,17.5469307 8.90772277,17.5486733 C8.86970297,17.5491485 8.83168317,17.5493069 8.79524752,17.5494653 C8.68118812,17.5491485 8.57029703,17.5472475 8.45623762,17.5429703 C8.21544554,17.5339406 7.97465347,17.5149307 7.73544554,17.486099 C7.03366337,17.401505 6.3429703,17.2318416 5.68079208,16.981703 C4.68910891,16.6065743 3.76712871,16.0505347 2.97188119,15.3492277 C2.40792079,14.8505347 1.90574257,14.2788119 1.48752475,13.6519604 C1.03445545,12.9745743 0.678019802,12.2330297 0.435643564,11.4553663 C0.256633663,10.8830099 0.139405941,10.291802 0.0855445545,9.69473267 C0.0586138614,9.39865347 0.0491089109,9.10162376 0.0522772277,8.80443564 L0.0522772277,0.0944158416 L1.06138614,0.0944158416 L1.06138614,8.81013861 L1.06138614,8.91453465 L1.06138614,9.0140198 C1.0629703,9.1130297 1.06455446,9.21188119 1.07089109,9.31073267 C1.0819802,9.53805941 1.10415842,9.76491089 1.13584158,9.99033663 C1.22772277,10.6333465 1.40356436,11.264 1.66019802,11.8613861 C2.01980198,12.7047921 2.53623762,13.4792871 3.16990099,14.1414653 C3.79564356,14.7939802 4.53544554,15.3357624 5.3449505,15.7362376 C6.05940594,16.0890297 6.82772277,16.3310891 7.6150495,16.4511683 C8.42613861,16.5747327 9.25782178,16.5704554 10.0673267,16.4359604 C10.7057426,16.3296634 11.3314851,16.1416238 11.9239604,15.8769109 C12.7714851,15.4979802 13.5477228,14.9631683 14.2067327,14.3089109 C14.8340594,13.6853861 15.3536634,12.9552475 15.740198,12.1587327 C16.0586139,11.5003564 16.2835644,10.7976238 16.4087129,10.0771485 C16.4578218,9.80308911 16.4910891,9.52665347 16.510099,9.24926733 C16.5180198,9.11651485 16.5243564,8.98376238 16.5275248,8.85069307 L16.5275248,8.80316832 L16.5370297,0.0944158416 L17.5271287,0.0944158416 L17.5271287,17.5201584 L16.5370297,17.5201584 L16.5370297,12.8188515 L16.5370297,12.8188515 Z\" id=\"Shape\"></path></g><g id=\"R\" transform=\"translate(40.314297, 8.413465)\" fill=\"#B31776\"><path d=\"M1.06455446,8.41552475 L1.04237624,17.5201584 L0.0522772277,17.5201584 L0.0522772277,0.0944158416 L1.04237624,0.0944158416 L1.04237624,4.55524752 C1.16594059,4.32966337 1.30059406,4.10978218 1.44316832,3.89639604 C1.83287129,3.31691089 2.29544554,2.78637624 2.81346535,2.31889109 C3.57069307,1.63611881 4.44831683,1.08910891 5.39405941,0.706693069 C6.08950495,0.425188119 6.82138614,0.232871287 7.56594059,0.133386139 C7.82257426,0.0993267327 8.07920792,0.076039604 8.33742574,0.0635247525 C8.48633663,0.0563960396 8.63524752,0.0532277228 8.78415842,0.0527524752 L8.78732673,1.08641584 C8.75247525,1.08657426 8.71920792,1.08673267 8.68594059,1.0870495 C8.65267327,1.08752475 8.61940594,1.08815842 8.58613861,1.0889505 C8.47049505,1.0919604 8.35485149,1.09687129 8.23920792,1.10463366 C7.99524752,1.12079208 7.75287129,1.14788119 7.51207921,1.18590099 C6.87366337,1.28681188 6.24792079,1.46550495 5.65227723,1.71849505 C4.82693069,2.0700198 4.06178218,2.56506931 3.40594059,3.17813861 C2.94653465,3.60712871 2.5409901,4.09346535 2.20356436,4.62320792 C1.85663366,5.16673267 1.5809901,5.75619802 1.38930693,6.37180198 C1.25306931,6.80966337 1.15960396,7.26035644 1.10891089,7.71611881 C1.0819802,7.94851485 1.06930693,8.18186139 1.06455446,8.41552475 L1.06455446,8.41552475 Z\" id=\"Shape\"></path></g><g id=\"E\" transform=\"translate(48.393505, 8.413465)\" fill=\"#9B2073\"><path d=\"M9.3750495,17.5510495 L8.81584158,17.5493069 C8.77940594,17.5488317 8.74138614,17.5483564 8.70336634,17.5478812 C8.59089109,17.5453465 8.48,17.5413861 8.36752475,17.5350495 C8.12831683,17.5214257 7.88910891,17.4979802 7.65148515,17.4647129 C6.98930693,17.3720396 6.33980198,17.2033267 5.71722772,16.9623762 C4.68277228,16.5620594 3.72910891,15.9626139 2.9180198,15.2072871 C2.12118812,14.4663762 1.46534653,13.5773465 0.993267327,12.5975446 C0.643168317,11.8707327 0.394455446,11.0954455 0.258217822,10.3003564 C0.0934653465,9.35081188 0.0887128713,8.37386139 0.239207921,7.42241584 C0.400792079,6.41489109 0.73980198,5.43778218 1.23722772,4.54732673 C1.78376238,3.56879208 2.52039604,2.69845545 3.39326733,1.99524752 C3.85742574,1.62075248 4.36118812,1.29394059 4.89188119,1.02178218 C5.3829703,0.770217822 5.89782178,0.565544554 6.42851485,0.411564356 C7.18574257,0.191524752 7.97148515,0.0757227723 8.76039604,0.0657425743 C9.64118812,0.0546534653 10.5235644,0.175366337 11.369505,0.426772277 C12.3184158,0.709386139 13.2182178,1.15564356 14.019802,1.73972277 C14.8673267,2.35849505 15.6023762,3.12966337 16.1805941,4.00665347 C16.5592079,4.58233663 16.869703,5.2030099 17.1025743,5.85172277 C17.3417822,6.51675248 17.4986139,7.21093069 17.569901,7.91413861 C17.5920792,8.13607921 17.6063366,8.35881188 17.6126733,8.58186139 C17.6126733,8.63825743 17.6142574,8.69449505 17.6142574,8.75073267 C17.6158416,8.78732673 17.6158416,8.82582178 17.6126733,8.86209901 C17.609505,8.8809505 17.6063366,8.89964356 17.6031683,8.91817822 C17.590495,8.97346535 17.5683168,9.02669307 17.5382178,9.07469307 C17.4780198,9.17132673 17.3845545,9.24562376 17.2768317,9.28332673 C17.2419802,9.29584158 17.2039604,9.30439604 17.1675248,9.30867327 C17.1485149,9.31073267 17.129505,9.31073267 17.110495,9.31184158 L9.0819802,9.31184158 L9.0819802,8.30273267 L16.5893069,8.30273267 C16.5718812,8.02867327 16.540198,7.75588119 16.4926733,7.48530693 C16.4023762,6.95271287 16.2534653,6.42962376 16.0522772,5.92807921 C15.7623762,5.20538614 15.3615842,4.528 14.8689109,3.92443564 C14.3112871,3.24007921 13.6364356,2.65188119 12.8823762,2.19342574 C12.2645545,1.81845545 11.5960396,1.53077228 10.8974257,1.34194059 C10.0625743,1.11588119 9.18970297,1.03287129 8.32633663,1.09322772 C7.90653465,1.12253465 7.48831683,1.18590099 7.07960396,1.28316832 C6.63287129,1.38914851 6.19722772,1.53520792 5.77584158,1.7189703 C4.89346535,2.10487129 4.08554455,2.65790099 3.40435644,3.33908911 C3.08752475,3.65655446 2.79762376,4.00158416 2.53940594,4.3689505 C2.21623762,4.82835644 1.94376238,5.32261386 1.72831683,5.84079208 C1.50336634,6.38384158 1.34019802,6.95287129 1.24356436,7.53314851 C1.16594059,8.00332673 1.13267327,8.48063366 1.14059406,8.95730693 C1.15168317,9.49449505 1.21663366,10.0305743 1.3370297,10.5541386 C1.47643564,11.1535842 1.68712871,11.7362376 1.96435644,12.2856238 C2.26534653,12.8817426 2.6439604,13.4382574 3.08594059,13.9375842 C3.49782178,14.4007921 3.96356436,14.8145743 4.47207921,15.1673663 C4.88237624,15.4514059 5.31960396,15.6958416 5.77584158,15.895604 C6.25584158,16.1050297 6.75485149,16.2653465 7.26653465,16.3733861 C7.59920792,16.4437228 7.93821782,16.4918812 8.27722772,16.517703 C8.45940594,16.5314851 8.64,16.5384554 8.82217822,16.540198 L9.37821782,16.5419406 C9.37821782,16.8782574 9.37663366,17.2145743 9.3750495,17.5510495 L9.3750495,17.5510495 Z\" id=\"Shape\"></path></g><g id=\"L\" transform=\"translate(68.512317, 0.017426)\" fill=\"#8F2475\"><path d=\"M5.15009901,25.945505 C4.98851485,25.9450297 4.82693069,25.9401188 4.66534653,25.9291881 C4.32475248,25.9062178 3.98415842,25.8577426 3.65148515,25.7802772 C3.31881188,25.7026535 2.99089109,25.5957228 2.67881188,25.4566337 C2.29227723,25.2849109 1.92633663,25.0642376 1.60158416,24.7947723 C1.43049505,24.6548911 1.27207921,24.5020198 1.12633663,24.3375842 C0.942574257,24.1314851 0.780990099,23.9074851 0.641584158,23.6692277 C0.467326733,23.3699802 0.331089109,23.0491881 0.234455446,22.7168317 C0.163168317,22.4693861 0.112475248,22.2157624 0.083960396,21.9597624 C0.0601980198,21.7470099 0.0491089109,21.5329901 0.0522772277,21.3189703 L0.0522772277,0.140673267 L1.06138614,0.140673267 L1.06138614,21.3253069 L1.06138614,21.430495 C1.0629703,21.5691089 1.07089109,21.7077228 1.08673267,21.8455446 C1.11207921,22.0673267 1.15643564,22.2870495 1.2229703,22.5001188 C1.30217822,22.7510495 1.40990099,22.9927921 1.54772277,23.2172673 C1.65227723,23.3893069 1.77425743,23.5510495 1.91049505,23.699802 C2.01821782,23.8186139 2.13544554,23.9291881 2.26059406,24.0305743 C2.36514851,24.1161188 2.4760396,24.1953267 2.59009901,24.2680396 C2.68831683,24.3306139 2.78970297,24.3884356 2.89267327,24.441505 C3.38534653,24.6930693 3.92712871,24.8370693 4.47524752,24.8991683 C4.70019802,24.9246733 4.92673267,24.9357624 5.15168317,24.936396 C5.15168317,25.2727129 5.15009901,25.6090297 5.15009901,25.945505 L5.15009901,25.945505 Z\" id=\"Shape\"></path></g><g id=\"I\" transform=\"translate(75.957861, 0.017426)\" fill=\"#78327A\"><path d=\"M0.148910891,25.916198 L0.148910891,8.49045545 L1.1390099,8.49045545 L1.1390099,25.916198 L0.148910891,25.916198 L0.148910891,25.916198 Z M0.153663366,2.47065347 L0.153663366,0.140673267 L1.13584158,0.140673267 L1.13584158,2.47065347 L0.153663366,2.47065347 L0.153663366,2.47065347 Z\" id=\"Shape\"></path></g><g id=\"A1\" transform=\"translate(79.601426, 8.413465)\" fill=\"#6E4D9B\"><path d=\"M8.79524752,16.5403564 C8.91089109,16.5398812 9.02811881,16.5376634 9.14376238,16.5325941 C9.38930693,16.5216634 9.63326733,16.4993267 9.87722772,16.4652673 C10.5853465,16.3659406 11.2792079,16.167604 11.9334653,15.8765941 C12.6716832,15.5480396 13.3576238,15.1027327 13.959604,14.5626931 C14.6281188,13.9616634 15.1920792,13.2446733 15.6166337,12.451802 C15.9588119,11.811802 16.2106931,11.1236436 16.3611881,10.4133069 C16.5433663,9.54756436 16.5766337,8.65029703 16.4594059,7.77330693 C16.3548515,6.98550495 16.1267327,6.21528713 15.7861386,5.49718812 C15.3932673,4.66946535 14.8514851,3.91382178 14.1972277,3.27382178 C13.5065347,2.60055446 12.6922772,2.0570297 11.8051485,1.68174257 C11.3378218,1.48419802 10.849901,1.33291089 10.3540594,1.23136634 C9.85663366,1.12982178 9.35128713,1.07754455 8.84435644,1.07437624 C8.33742574,1.07120792 7.82891089,1.1169901 7.32990099,1.21251485 C6.83089109,1.30819802 6.34138614,1.45346535 5.87247525,1.64546535 C4.9790099,2.01029703 4.15683168,2.54415842 3.45980198,3.20950495 C2.7960396,3.84126733 2.24633663,4.59041584 1.8439604,5.41275248 C1.49544554,6.12546535 1.25782178,6.89188119 1.14376238,7.6769901 C1.01861386,8.53671287 1.0360396,9.41813861 1.20079208,10.2716832 C1.34336634,11.0167129 1.59683168,11.7395644 1.95009901,12.4104554 C2.34138614,13.1512079 2.85306931,13.8271683 3.45980198,14.4050693 C4.07762376,14.9945347 4.79366337,15.4813465 5.56990099,15.8379406 C6.21940594,16.1362376 6.91009901,16.3432871 7.61663366,16.4511683 C7.8590099,16.4882376 8.1029703,16.5135842 8.34693069,16.5275248 C8.46257426,16.5341782 8.57821782,16.5378218 8.69386139,16.5397228 C8.72871287,16.5400396 8.76039604,16.540198 8.79524752,16.5403564 L8.79524752,16.5403564 Z M16.8538614,12.199604 C16.769901,12.3988911 16.6780198,12.5950099 16.579802,12.7874851 C16.1251485,13.6768317 15.5152475,14.4861782 14.7881188,15.1714851 C14.0720792,15.8460198 13.2435644,16.3988911 12.3437624,16.7987327 C11.6039604,17.1277624 10.8182178,17.352396 10.0166337,17.4647129 C9.74257426,17.5030495 9.46534653,17.528396 9.18811881,17.5407525 C9.05663366,17.5466139 8.92514851,17.5489901 8.79524752,17.5494653 C8.66376238,17.5489901 8.53227723,17.5466139 8.40079208,17.5407525 C8.12356436,17.528396 7.84792079,17.5030495 7.57227723,17.4647129 C6.77069307,17.352396 5.9849505,17.1277624 5.24514851,16.7987327 C4.33108911,16.3917624 3.48673267,15.8262178 2.76277228,15.1353663 C2.05306931,14.4579802 1.45742574,13.6613069 1.00910891,12.7874851 C0.633663366,12.0551287 0.364356436,11.269703 0.209108911,10.4616238 C0.0316831683,9.53362376 0.00475247525,8.57631683 0.12990099,7.63976238 C0.248712871,6.74867327 0.506930693,5.87706931 0.891881188,5.06471287 C1.34336634,4.11342574 1.96752475,3.24641584 2.72475248,2.51548515 C3.50891089,1.75873267 4.43405941,1.15009901 5.44,0.731722772 C5.98811881,0.504237624 6.55841584,0.332990099 7.13980198,0.221465347 C7.68475248,0.117069307 8.23920792,0.0651089109 8.79524752,0.0651089109 C9.34970297,0.0651089109 9.90415842,0.117069307 10.4491089,0.221465347 C11.030495,0.332990099 11.6007921,0.504237624 12.1489109,0.731722772 C13.1548515,1.15009901 14.08,1.75873267 14.8641584,2.51532673 C15.6087129,3.23390099 16.2249505,4.08443564 16.6748515,5.01687129 C16.7382178,5.1480396 16.7968317,5.28079208 16.8538614,5.4149703 L16.8538614,0.0944158416 L17.8439604,0.0944158416 L17.8439604,17.5201584 C17.8423762,17.5393267 16.8538614,17.5201584 16.8538614,17.5201584 L16.8538614,12.199604 L16.8538614,12.199604 Z\" id=\"Shape\"></path></g></g></g></g></svg></template>"; });
-define('text!resources/elements/controller-view.css', ['module'], function(module) { module.exports = "controller-view .category-name {\n  font-size: 10px;\n  margin-bottom: 2px;\n  margin-top: 2px;\n}\n"; });
+define('text!reset.css', ['module'], function(module) { module.exports = "/* http://meyerweb.com/eric/tools/css/reset/\n   v2.0 | 20110126\n   License: none (public domain)\n*/\n\nhtml, body, div, span, applet, object, iframe,\nh1, h2, h3, h4, h5, h6, p, blockquote, pre,\na, abbr, acronym, address, big, cite, code,\ndel, dfn, em, img, ins, kbd, q, s, samp,\nsmall, strike, strong, sub, sup, tt, var,\nb, u, i, center,\ndl, dt, dd, ol, ul, li,\nfieldset, form, label, legend,\ntable, caption, tbody, tfoot, thead, tr, th, td,\narticle, aside, canvas, details, embed,\nfigure, figcaption, footer, header, hgroup,\nmenu, nav, output, ruby, section, summary,\ntime, mark, audio, video {\n\tmargin: 0;\n\tpadding: 0;\n\tborder: 0;\n\tfont-size: 100%;\n\tfont: inherit;\n\tvertical-align: baseline;\n}\n/* HTML5 display-role reset for older browsers */\narticle, aside, details, figcaption, figure,\nfooter, header, hgroup, menu, nav, section {\n\tdisplay: block;\n}\nbody {\n\tline-height: 1;\n}\nol, ul {\n\tlist-style: none;\n}\nblockquote, q {\n\tquotes: none;\n}\nblockquote:before, blockquote:after,\nq:before, q:after {\n\tcontent: '';\n\tcontent: none;\n}\ntable {\n\tborder-collapse: collapse;\n\tborder-spacing: 0;\n}\n\n/*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */\n\n/* Document\n   ========================================================================== */\n\n/**\n * 1. Change the default font family in all browsers (opinionated).\n * 2. Correct the line height in all browsers.\n * 3. Prevent adjustments of font size after orientation changes in\n *    IE on Windows Phone and in iOS.\n */\n\nhtml {\n  font-family: sans-serif; /* 1 */\n  line-height: 1.15; /* 2 */\n  -ms-text-size-adjust: 100%; /* 3 */\n  -webkit-text-size-adjust: 100%; /* 3 */\n}\n\n/* Forms\n   ========================================================================== */\n\n/**\n * 1. Change the font styles in all browsers (opinionated).\n * 2. Remove the margin in Firefox and Safari.\n */\n\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: sans-serif; /* 1 */\n  font-size: 100%; /* 1 */\n  line-height: 1.15; /* 1 */\n  margin: 0; /* 2 */\n}\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\n\nbutton,\ninput { /* 1 */\n  overflow: visible;\n}\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\n\nbutton,\nselect { /* 1 */\n  text-transform: none;\n}\n\n/**\n * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`\n *    controls in Android 4.\n * 2. Correct the inability to style clickable types in iOS and Safari.\n */\n\nbutton,\nhtml [type=\"button\"], /* 1 */\n[type=\"reset\"],\n[type=\"submit\"] {\n  -webkit-appearance: button; /* 2 */\n}\n\n/**\n * Remove the inner border and padding in Firefox.\n */\n\nbutton::-moz-focus-inner,\n[type=\"button\"]::-moz-focus-inner,\n[type=\"reset\"]::-moz-focus-inner,\n[type=\"submit\"]::-moz-focus-inner {\n  border-style: none;\n  padding: 0;\n}\n\n/**\n * Restore the focus styles unset by the previous rule.\n */\n\nbutton:-moz-focusring,\n[type=\"button\"]:-moz-focusring,\n[type=\"reset\"]:-moz-focusring,\n[type=\"submit\"]:-moz-focusring {\n  outline: 1px dotted ButtonText;\n}\n\n/**\n * Change the border, margin, and padding in all browsers (opinionated).\n */\n\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em;\n}\n\n/**\n * 1. Correct the text wrapping in Edge and IE.\n * 2. Correct the color inheritance from `fieldset` elements in IE.\n * 3. Remove the padding so developers are not caught out when they zero out\n *    `fieldset` elements in all browsers.\n */\n\nlegend {\n  box-sizing: border-box; /* 1 */\n  color: inherit; /* 2 */\n  display: table; /* 1 */\n  max-width: 100%; /* 1 */\n  padding: 0; /* 3 */\n  white-space: normal; /* 1 */\n}\n\n/**\n * 1. Add the correct display in IE 9-.\n * 2. Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\n\nprogress {\n  display: inline-block; /* 1 */\n  vertical-align: baseline; /* 2 */\n}\n\n/**\n * Remove the default vertical scrollbar in IE.\n */\n\ntextarea {\n  overflow: auto;\n}\n\n/**\n * 1. Add the correct box sizing in IE 10-.\n * 2. Remove the padding in IE 10-.\n */\n\n[type=\"checkbox\"],\n[type=\"radio\"] {\n  box-sizing: border-box; /* 1 */\n  padding: 0; /* 2 */\n}\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto;\n}\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n\n[type=\"search\"] {\n  -webkit-appearance: textfield; /* 1 */\n  outline-offset: -2px; /* 2 */\n}\n\n/**\n * Remove the inner padding and cancel buttons in Chrome and Safari on macOS.\n */\n\n[type=\"search\"]::-webkit-search-cancel-button,\n[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n\n::-webkit-file-upload-button {\n  -webkit-appearance: button; /* 1 */\n  font: inherit; /* 2 */\n}\n"; });
 define('text!resources/elements/controller-view.html', ['module'], function(module) { module.exports = "<template bindable=\"controller\"><require from=\"./controller-view.css\"></require><div class=\"category\" if.bind=\"controller.bindables.length\"><h4 class=\"category-name\">Bindables</h4><ul class=\"properties\"><li repeat.for=\"bindable of controller.bindables\"><property-view property.bind=\"bindable\"></property-view></li></ul></div><div class=\"category\" if.bind=\"controller.properties.length\"><h4 class=\"category-name\">Properties</h4><ul class=\"properties\"><li repeat.for=\"property of controller.properties\"><property-view property.bind=\"property\"></property-view></li></ul></div></template>"; });
-define('text!resources/elements/debug-group.css', ['module'], function(module) { module.exports = "debug-group .header {\n  font-weight: normal;\n  font-size: 12px;\n  margin: 0;\n  padding: 4px;\n  background: #f4f4f4;\n  border-bottom: 1px solid rgba(0, 0, 0, .25);\n  border-top: 1px solid rgba(0, 0, 0, .25);\n}\n\n.dark debug-group .header {\n  color: #989898;\n  background: #2a2a2a;\n  border-bottom: 1px solid #5c5c5c;\n  border-top: 1px solid #3d3d3d;\n}\n\ndebug-group .content { \n  margin: 4px;\n}\n"; });
+define('text!resources/elements/controller-view.css', ['module'], function(module) { module.exports = "controller-view .category-name {\n  font-size: 10px;\n  margin-bottom: 2px;\n  margin-top: 2px;\n}\n"; });
 define('text!resources/elements/debug-group.html', ['module'], function(module) { module.exports = "<template><require from=\"./debug-group.css\"></require><section><h2 class=\"header\">${heading}</h2><div class=\"content\"><slot></slot></div></section></template>"; });
-define('text!resources/elements/property-view.css', ['module'], function(module) { module.exports = "property-view {\n  margin-top: 2px;\n  display: block;\n}\n\nproperty-view .arrow {\n  font-size: 10px;\n  color: dimgray;\n  cursor: default;\n}\n\nproperty-view .arrow .right {\n  margin-right: 1px;\n}\n\nproperty-view .property-line {\n  white-space: nowrap;\n}\n\nproperty-view .property-name {\n  font-size: 12px;\n  color: purple;\n  font-family: monospace;\n  margin-left: 1px;\n}\n\n.dark property-view .property-name {\n  color: #34c7bb;\n}\nproperty-view .value-container {\n  position: relative;\n}\n\nproperty-view .property-editor {\n  font-family: monospace;\n  font-size: 12px;\n  margin: 0;\n  height: 12px;\n  outline: none;\n  border: 1px solid darkgray;\n  box-shadow: 0 0 5px rgba(0,0,0,.5);\n  position: absolute;\n  top: 4px;\n  left: 2px;\n  padding: 0 0 0 2px;\n}\n\nproperty-view .property-value, property-view .token-colon {\n  font-size: 12px;\n  color: dimgray;\n  font-family: monospace;\n}\n\nproperty-view .property-value.null, property-view .property-value.undefined {\n  color: dimgray;\n}\n\nproperty-view .property-value.boolean {\n  color: deeppink;\n}\n\nproperty-view .property-value.string {\n  color: red;\n  white-space: nowrap;\n}\n.dark property-view .property-value.string {\n  color:#cbcbcb;\n}\n\nproperty-view .property-value.number {\n  color: blue;\n}\n\n.dark property-view .property-value.number {\n  color: #59a6ca;\n}\n\nproperty-view .property-value.array {\n  color: black;\n}\n\n.dark property-view .property-value.array {\n  color: #cbcbcb;\n}\n\nproperty-view .property-value.object, property-view .property-value.node {\n  color: black;\n}\n\n.dark property-view .property-value.object, property-view .property-value.node {\n  color: #cbcbcb;\n}\n\nproperty-view ul.properties {\n  margin-left: 16px;\n}\n\nproperty-view .no-properties {\n  margin-top: 4px;\n  font-size: 10px;\n}\n\n.dark property-view .no-properties {\n  color: #989898;\n}\n"; });
+define('text!resources/elements/debug-group.css', ['module'], function(module) { module.exports = "debug-group .header {\n  font-weight: normal;\n  font-size: 12px;\n  margin: 0;\n  padding: 4px;\n  background: #f4f4f4;\n  border-bottom: 1px solid rgba(0, 0, 0, .25);\n  border-top: 1px solid rgba(0, 0, 0, .25);\n}\n\n.dark debug-group .header {\n  color: #989898;\n  background: #2a2a2a;\n  border-bottom: 1px solid #5c5c5c;\n  border-top: 1px solid #3d3d3d;\n}\n\ndebug-group .content { \n  margin: 4px;\n}\n"; });
 define('text!resources/elements/property-view.html', ['module'], function(module) { module.exports = "<template><require from=\"./property-view.css\"></require><span class=\"property-line\"><span css=\"opacity: ${property.canExpand? 1 : 0}\" class=\"arrow\" click.trigger=\"debugHost.toggleDebugValueExpansion(property)\"><span if.bind=\"property.isExpanded\" class=\"down\">▼</span> <span if.bind=\"!property.isExpanded\" class=\"right\">▶</span> </span><span class=\"property-name\">${property.name}</span><span class=\"token-colon\">:</span>&nbsp; <span class=\"value-container\"><span if.bind=\"property.type === 'string' && !property.isEditing\" class=\"property-value string\">\"</span><span if.bind=\"!property.isEditing\" class=\"property-value ${property.type}\" click.trigger=\"beginEditing()\">${property.value}</span><span if.bind=\"property.type === 'string' && !property.isEditing\" class=\"property-value string\">\"</span> <input if.bind=\"property.isEditing\" class=\"property-editor\" ref=\"editor\" type=\"text\" value.one-way=\"property.value\" keydown.trigger=\"onKeyDown($event)\" blur.trigger=\"endEditing()\"></span></span><ul if.bind=\"property.isExpanded && property.expandedValue\" class=\"properties\"><div if.bind=\"!property.expandedValue.properties.length\" class=\"no-properties\">Object has no properties.</div><li repeat.for=\"p of property.expandedValue.properties\"><property-view property.bind=\"p\"></property-view></li></ul></template>"; });
+define('text!resources/elements/property-view.css', ['module'], function(module) { module.exports = "property-view {\n  margin-top: 2px;\n  display: block;\n}\n\nproperty-view .arrow {\n  font-size: 10px;\n  color: dimgray;\n  cursor: default;\n}\n\nproperty-view .arrow .right {\n  margin-right: 1px;\n}\n\nproperty-view .property-line {\n  white-space: nowrap;\n}\n\nproperty-view .property-name {\n  font-size: 12px;\n  color: purple;\n  font-family: monospace;\n  margin-left: 1px;\n}\n\n.dark property-view .property-name {\n  color: #34c7bb;\n}\nproperty-view .value-container {\n  position: relative;\n}\n\nproperty-view .property-editor {\n  font-family: monospace;\n  font-size: 12px;\n  margin: 0;\n  height: 12px;\n  outline: none;\n  border: 1px solid darkgray;\n  box-shadow: 0 0 5px rgba(0,0,0,.5);\n  position: absolute;\n  top: 4px;\n  left: 2px;\n  padding: 0 0 0 2px;\n}\n\nproperty-view .property-value, property-view .token-colon {\n  font-size: 12px;\n  color: dimgray;\n  font-family: monospace;\n}\n\nproperty-view .property-value.null, property-view .property-value.undefined {\n  color: dimgray;\n}\n\nproperty-view .property-value.boolean {\n  color: deeppink;\n}\n\nproperty-view .property-value.string {\n  color: red;\n  white-space: nowrap;\n}\n.dark property-view .property-value.string {\n  color:#cbcbcb;\n}\n\nproperty-view .property-value.number {\n  color: blue;\n}\n\n.dark property-view .property-value.number {\n  color: #59a6ca;\n}\n\nproperty-view .property-value.array {\n  color: black;\n}\n\n.dark property-view .property-value.array {\n  color: #cbcbcb;\n}\n\nproperty-view .property-value.object, property-view .property-value.node {\n  color: black;\n}\n\n.dark property-view .property-value.object, property-view .property-value.node {\n  color: #cbcbcb;\n}\n\nproperty-view ul.properties {\n  margin-left: 16px;\n}\n\nproperty-view .no-properties {\n  margin-top: 4px;\n  font-size: 10px;\n}\n\n.dark property-view .no-properties {\n  color: #989898;\n}\n"; });
 define('aurelia-binding',['exports', 'aurelia-logging', 'aurelia-pal', 'aurelia-task-queue', 'aurelia-metadata'], function (exports, _aureliaLogging, _aureliaPal, _aureliaTaskQueue, _aureliaMetadata) {
   'use strict';
 
@@ -11856,155 +11856,6 @@ define('aurelia-binding',['exports', 'aurelia-logging', 'aurelia-pal', 'aurelia-
     return deco(targetOrConfig, key, descriptor);
   }
 });
-define('aurelia-bootstrapper',['exports', 'aurelia-pal', 'aurelia-pal-browser', 'aurelia-polyfills'], function (exports, _aureliaPal, _aureliaPalBrowser) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.bootstrap = bootstrap;
-
-
-  var bootstrapQueue = [];
-  var sharedLoader = null;
-  var Aurelia = null;
-
-  function onBootstrap(callback) {
-    return new Promise(function (resolve, reject) {
-      if (sharedLoader) {
-        resolve(callback(sharedLoader));
-      } else {
-        bootstrapQueue.push(function () {
-          try {
-            resolve(callback(sharedLoader));
-          } catch (e) {
-            reject(e);
-          }
-        });
-      }
-    });
-  }
-
-  function ready(global) {
-    return new Promise(function (resolve, reject) {
-      if (global.document.readyState === 'complete') {
-        resolve(global.document);
-      } else {
-        global.document.addEventListener('DOMContentLoaded', completed);
-        global.addEventListener('load', completed);
-      }
-
-      function completed() {
-        global.document.removeEventListener('DOMContentLoaded', completed);
-        global.removeEventListener('load', completed);
-        resolve(global.document);
-      }
-    });
-  }
-
-  function createLoader() {
-    if (_aureliaPal.PLATFORM.Loader) {
-      return Promise.resolve(new _aureliaPal.PLATFORM.Loader());
-    }
-
-    if (window.System && typeof window.System.import === 'function') {
-      return System.normalize('aurelia-bootstrapper').then(function (bootstrapperName) {
-        return System.normalize('aurelia-loader-default', bootstrapperName);
-      }).then(function (loaderName) {
-        return System.import(loaderName).then(function (m) {
-          return new m.DefaultLoader();
-        });
-      });
-    }
-
-    if (typeof window.require === 'function') {
-      return new Promise(function (resolve, reject) {
-        return require(['aurelia-loader-default'], function (m) {
-          return resolve(new m.DefaultLoader());
-        }, reject);
-      });
-    }
-
-    return Promise.reject('No PLATFORM.Loader is defined and there is neither a System API (ES6) or a Require API (AMD) globally available to load your app.');
-  }
-
-  function preparePlatform(loader) {
-    return loader.normalize('aurelia-bootstrapper').then(function (bootstrapperName) {
-      return loader.normalize('aurelia-framework', bootstrapperName).then(function (frameworkName) {
-        loader.map('aurelia-framework', frameworkName);
-
-        return Promise.all([loader.normalize('aurelia-dependency-injection', frameworkName).then(function (diName) {
-          return loader.map('aurelia-dependency-injection', diName);
-        }), loader.normalize('aurelia-router', bootstrapperName).then(function (routerName) {
-          return loader.map('aurelia-router', routerName);
-        }), loader.normalize('aurelia-logging-console', bootstrapperName).then(function (loggingConsoleName) {
-          return loader.map('aurelia-logging-console', loggingConsoleName);
-        })]).then(function () {
-          return loader.loadModule(frameworkName).then(function (m) {
-            return Aurelia = m.Aurelia;
-          });
-        });
-      });
-    });
-  }
-
-  function handleApp(loader, appHost) {
-    var moduleId = appHost.getAttribute('aurelia-app') || appHost.getAttribute('data-aurelia-app');
-    return config(loader, appHost, moduleId);
-  }
-
-  function config(loader, appHost, configModuleId) {
-    var aurelia = new Aurelia(loader);
-    aurelia.host = appHost;
-    aurelia.configModuleId = configModuleId || null;
-
-    if (configModuleId) {
-      return loader.loadModule(configModuleId).then(function (customConfig) {
-        if (!customConfig.configure) {
-          throw new Error("Cannot initialize module '" + configModuleId + "' without a configure function.");
-        }
-
-        customConfig.configure(aurelia);
-      });
-    }
-
-    aurelia.use.standardConfiguration().developmentLogging();
-
-    return aurelia.start().then(function () {
-      return aurelia.setRoot();
-    });
-  }
-
-  function run() {
-    return ready(window).then(function (doc) {
-      (0, _aureliaPalBrowser.initialize)();
-
-      var appHost = doc.querySelectorAll('[aurelia-app],[data-aurelia-app]');
-      return createLoader().then(function (loader) {
-        return preparePlatform(loader).then(function () {
-          for (var i = 0, ii = appHost.length; i < ii; ++i) {
-            handleApp(loader, appHost[i]).catch(console.error.bind(console));
-          }
-
-          sharedLoader = loader;
-          for (var _i = 0, _ii = bootstrapQueue.length; _i < _ii; ++_i) {
-            bootstrapQueue[_i]();
-          }
-          bootstrapQueue = null;
-        });
-      });
-    });
-  }
-
-  function bootstrap(configure) {
-    return onBootstrap(function (loader) {
-      var aurelia = new Aurelia(loader);
-      return configure(aurelia);
-    });
-  }
-
-  run();
-});
 define('aurelia-dependency-injection',['exports', 'aurelia-metadata', 'aurelia-pal'], function (exports, _aureliaMetadata, _aureliaPal) {
   'use strict';
 
@@ -13459,264 +13310,6 @@ define('aurelia-loader',['exports', 'aurelia-path', 'aurelia-metadata'], functio
     return Loader;
   }();
 });
-define('aurelia-loader-default',['exports', 'aurelia-loader', 'aurelia-pal', 'aurelia-metadata'], function (exports, _aureliaLoader, _aureliaPal, _aureliaMetadata) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.DefaultLoader = exports.TextTemplateLoader = undefined;
-
-  function _possibleConstructorReturn(self, call) {
-    if (!self) {
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    }
-
-    return call && (typeof call === "object" || typeof call === "function") ? call : self;
-  }
-
-  function _inherits(subClass, superClass) {
-    if (typeof superClass !== "function" && superClass !== null) {
-      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
-    }
-
-    subClass.prototype = Object.create(superClass && superClass.prototype, {
-      constructor: {
-        value: subClass,
-        enumerable: false,
-        writable: true,
-        configurable: true
-      }
-    });
-    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-  }
-
-  
-
-  var TextTemplateLoader = exports.TextTemplateLoader = function () {
-    function TextTemplateLoader() {
-      
-    }
-
-    TextTemplateLoader.prototype.loadTemplate = function loadTemplate(loader, entry) {
-      return loader.loadText(entry.address).then(function (text) {
-        entry.template = _aureliaPal.DOM.createTemplateFromMarkup(text);
-      });
-    };
-
-    return TextTemplateLoader;
-  }();
-
-  function ensureOriginOnExports(executed, name) {
-    var target = executed;
-    var key = void 0;
-    var exportedValue = void 0;
-
-    if (target.__useDefault) {
-      target = target['default'];
-    }
-
-    _aureliaMetadata.Origin.set(target, new _aureliaMetadata.Origin(name, 'default'));
-
-    for (key in target) {
-      exportedValue = target[key];
-
-      if (typeof exportedValue === 'function') {
-        _aureliaMetadata.Origin.set(exportedValue, new _aureliaMetadata.Origin(name, key));
-      }
-    }
-
-    return executed;
-  }
-
-  var DefaultLoader = exports.DefaultLoader = function (_Loader) {
-    _inherits(DefaultLoader, _Loader);
-
-    function DefaultLoader() {
-      
-
-      var _this = _possibleConstructorReturn(this, _Loader.call(this));
-
-      _this.textPluginName = 'text';
-
-
-      _this.moduleRegistry = Object.create(null);
-      _this.useTemplateLoader(new TextTemplateLoader());
-
-      var that = _this;
-
-      _this.addPlugin('template-registry-entry', {
-        'fetch': function fetch(address) {
-          var entry = that.getOrCreateTemplateRegistryEntry(address);
-          return entry.templateIsLoaded ? entry : that.templateLoader.loadTemplate(that, entry).then(function (x) {
-            return entry;
-          });
-        }
-      });
-      return _this;
-    }
-
-    DefaultLoader.prototype.useTemplateLoader = function useTemplateLoader(templateLoader) {
-      this.templateLoader = templateLoader;
-    };
-
-    DefaultLoader.prototype.loadAllModules = function loadAllModules(ids) {
-      var loads = [];
-
-      for (var i = 0, ii = ids.length; i < ii; ++i) {
-        loads.push(this.loadModule(ids[i]));
-      }
-
-      return Promise.all(loads);
-    };
-
-    DefaultLoader.prototype.loadTemplate = function loadTemplate(url) {
-      return this._import(this.applyPluginToUrl(url, 'template-registry-entry'));
-    };
-
-    DefaultLoader.prototype.loadText = function loadText(url) {
-      return this._import(this.applyPluginToUrl(url, this.textPluginName)).then(function (textOrModule) {
-        if (typeof textOrModule === 'string') {
-          return textOrModule;
-        }
-
-        return textOrModule['default'];
-      });
-    };
-
-    return DefaultLoader;
-  }(_aureliaLoader.Loader);
-
-  _aureliaPal.PLATFORM.Loader = DefaultLoader;
-
-  if (!_aureliaPal.PLATFORM.global.System || !_aureliaPal.PLATFORM.global.System.import) {
-    if (_aureliaPal.PLATFORM.global.requirejs && requirejs.s && requirejs.s.contexts && requirejs.s.contexts._ && requirejs.s.contexts._.defined) {
-      _aureliaPal.PLATFORM.eachModule = function (callback) {
-        var defined = requirejs.s.contexts._.defined;
-        for (var key in defined) {
-          try {
-            if (callback(key, defined[key])) return;
-          } catch (e) {}
-        }
-      };
-    } else {
-      _aureliaPal.PLATFORM.eachModule = function (callback) {};
-    }
-
-    DefaultLoader.prototype._import = function (moduleId) {
-      return new Promise(function (resolve, reject) {
-        require([moduleId], resolve, reject);
-      });
-    };
-
-    DefaultLoader.prototype.loadModule = function (id) {
-      var _this2 = this;
-
-      var existing = this.moduleRegistry[id];
-      if (existing !== undefined) {
-        return Promise.resolve(existing);
-      }
-
-      return new Promise(function (resolve, reject) {
-        require([id], function (m) {
-          _this2.moduleRegistry[id] = m;
-          resolve(ensureOriginOnExports(m, id));
-        }, reject);
-      });
-    };
-
-    DefaultLoader.prototype.map = function (id, source) {};
-
-    DefaultLoader.prototype.normalize = function (moduleId, relativeTo) {
-      return Promise.resolve(moduleId);
-    };
-
-    DefaultLoader.prototype.normalizeSync = function (moduleId, relativeTo) {
-      return moduleId;
-    };
-
-    DefaultLoader.prototype.applyPluginToUrl = function (url, pluginName) {
-      return pluginName + '!' + url;
-    };
-
-    DefaultLoader.prototype.addPlugin = function (pluginName, implementation) {
-      var nonAnonDefine = define;
-      nonAnonDefine(pluginName, [], {
-        'load': function load(name, req, onload) {
-          var result = implementation.fetch(name);
-          Promise.resolve(result).then(onload);
-        }
-      });
-    };
-  } else {
-    _aureliaPal.PLATFORM.eachModule = function (callback) {
-      var modules = System._loader.modules;
-
-      for (var key in modules) {
-        try {
-          if (callback(key, modules[key].module)) return;
-        } catch (e) {}
-      }
-    };
-
-    System.set('text', System.newModule({
-      'translate': function translate(load) {
-        return 'module.exports = "' + load.source.replace(/(["\\])/g, '\\$1').replace(/[\f]/g, '\\f').replace(/[\b]/g, '\\b').replace(/[\n]/g, '\\n').replace(/[\t]/g, '\\t').replace(/[\r]/g, '\\r').replace(/[\u2028]/g, '\\u2028').replace(/[\u2029]/g, '\\u2029') + '";';
-      }
-    }));
-
-    DefaultLoader.prototype._import = function (moduleId) {
-      return System.import(moduleId);
-    };
-
-    DefaultLoader.prototype.loadModule = function (id) {
-      var _this3 = this;
-
-      return System.normalize(id).then(function (newId) {
-        var existing = _this3.moduleRegistry[newId];
-        if (existing !== undefined) {
-          return Promise.resolve(existing);
-        }
-
-        return System.import(newId).then(function (m) {
-          _this3.moduleRegistry[newId] = m;
-          return ensureOriginOnExports(m, newId);
-        });
-      });
-    };
-
-    DefaultLoader.prototype.map = function (id, source) {
-      System.map[id] = source;
-    };
-
-    DefaultLoader.prototype.normalizeSync = function (moduleId, relativeTo) {
-      return System.normalizeSync(moduleId, relativeTo);
-    };
-
-    DefaultLoader.prototype.normalize = function (moduleId, relativeTo) {
-      return System.normalize(moduleId, relativeTo);
-    };
-
-    DefaultLoader.prototype.applyPluginToUrl = function (url, pluginName) {
-      return url + '!' + pluginName;
-    };
-
-    DefaultLoader.prototype.addPlugin = function (pluginName, implementation) {
-      System.set(pluginName, System.newModule({
-        'fetch': function fetch(load, _fetch) {
-          var result = implementation.fetch(load.address);
-          return Promise.resolve(result).then(function (x) {
-            load.metadata.result = x;
-            return '';
-          });
-        },
-        'instantiate': function instantiate(load) {
-          return load.metadata.result;
-        }
-      }));
-    };
-  }
-});
 define('aurelia-logging',['exports'], function (exports) {
   'use strict';
 
@@ -13858,64 +13451,6 @@ define('aurelia-logging',['exports'], function (exports) {
     };
 
     return Logger;
-  }();
-});
-define('aurelia-logging-console',['exports', 'aurelia-logging'], function (exports, _aureliaLogging) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.ConsoleAppender = undefined;
-
-  
-
-  var ConsoleAppender = exports.ConsoleAppender = function () {
-    function ConsoleAppender() {
-      
-    }
-
-    ConsoleAppender.prototype.debug = function debug(logger) {
-      var _console;
-
-      for (var _len = arguments.length, rest = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        rest[_key - 1] = arguments[_key];
-      }
-
-      (_console = console).debug.apply(_console, ['DEBUG [' + logger.id + ']'].concat(rest));
-    };
-
-    ConsoleAppender.prototype.info = function info(logger) {
-      var _console2;
-
-      for (var _len2 = arguments.length, rest = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
-        rest[_key2 - 1] = arguments[_key2];
-      }
-
-      (_console2 = console).info.apply(_console2, ['INFO [' + logger.id + ']'].concat(rest));
-    };
-
-    ConsoleAppender.prototype.warn = function warn(logger) {
-      var _console3;
-
-      for (var _len3 = arguments.length, rest = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
-        rest[_key3 - 1] = arguments[_key3];
-      }
-
-      (_console3 = console).warn.apply(_console3, ['WARN [' + logger.id + ']'].concat(rest));
-    };
-
-    ConsoleAppender.prototype.error = function error(logger) {
-      var _console4;
-
-      for (var _len4 = arguments.length, rest = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
-        rest[_key4 - 1] = arguments[_key4];
-      }
-
-      (_console4 = console).error.apply(_console4, ['ERROR [' + logger.id + ']'].concat(rest));
-    };
-
-    return ConsoleAppender;
   }();
 });
 define('aurelia-metadata',['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
@@ -14304,515 +13839,411 @@ define('aurelia-pal',['exports'], function (exports) {
     exports.isInitialized = isInitialized = false;
   }
 });
-define('aurelia-pal-browser',['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
+define('aurelia-bootstrapper',['exports', 'aurelia-pal', 'aurelia-pal-browser', 'aurelia-polyfills'], function (exports, _aureliaPal, _aureliaPalBrowser) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports._DOM = exports._FEATURE = exports._PLATFORM = undefined;
-  exports._ensureFunctionName = _ensureFunctionName;
-  exports._ensureClassList = _ensureClassList;
-  exports._ensurePerformance = _ensurePerformance;
-  exports._ensureCustomEvent = _ensureCustomEvent;
-  exports._ensureElementMatches = _ensureElementMatches;
-  exports._ensureHTMLTemplateElement = _ensureHTMLTemplateElement;
-  exports.initialize = initialize;
+  exports.bootstrap = bootstrap;
 
-  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-    return typeof obj;
-  } : function (obj) {
-    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-  };
 
-  var _PLATFORM = exports._PLATFORM = {
-    location: window.location,
-    history: window.history,
-    addEventListener: function addEventListener(eventName, callback, capture) {
-      this.global.addEventListener(eventName, callback, capture);
-    },
-    removeEventListener: function removeEventListener(eventName, callback, capture) {
-      this.global.removeEventListener(eventName, callback, capture);
-    },
+  var bootstrapQueue = [];
+  var sharedLoader = null;
+  var Aurelia = null;
 
-    performance: window.performance,
-    requestAnimationFrame: function requestAnimationFrame(callback) {
-      return this.global.requestAnimationFrame(callback);
-    }
-  };
-
-  function _ensureFunctionName() {
-    function test() {}
-
-    if (!test.name) {
-      Object.defineProperty(Function.prototype, 'name', {
-        get: function get() {
-          var name = this.toString().match(/^\s*function\s*(\S*)\s*\(/)[1];
-
-          Object.defineProperty(this, 'name', { value: name });
-          return name;
-        }
-      });
-    }
-  }
-
-  function _ensureClassList() {
-    if (!('classList' in document.createElement('_')) || document.createElementNS && !('classList' in document.createElementNS('http://www.w3.org/2000/svg', 'g'))) {
-      (function () {
-        var protoProp = 'prototype';
-        var strTrim = String.prototype.trim;
-        var arrIndexOf = Array.prototype.indexOf;
-        var emptyArray = [];
-
-        var DOMEx = function DOMEx(type, message) {
-          this.name = type;
-          this.code = DOMException[type];
-          this.message = message;
-        };
-
-        var checkTokenAndGetIndex = function checkTokenAndGetIndex(classList, token) {
-          if (token === '') {
-            throw new DOMEx('SYNTAX_ERR', 'An invalid or illegal string was specified');
+  function onBootstrap(callback) {
+    return new Promise(function (resolve, reject) {
+      if (sharedLoader) {
+        resolve(callback(sharedLoader));
+      } else {
+        bootstrapQueue.push(function () {
+          try {
+            resolve(callback(sharedLoader));
+          } catch (e) {
+            reject(e);
           }
-
-          if (/\s/.test(token)) {
-            throw new DOMEx('INVALID_CHARACTER_ERR', 'String contains an invalid character');
-          }
-
-          return arrIndexOf.call(classList, token);
-        };
-
-        var ClassList = function ClassList(elem) {
-          var trimmedClasses = strTrim.call(elem.getAttribute('class') || '');
-          var classes = trimmedClasses ? trimmedClasses.split(/\s+/) : emptyArray;
-
-          for (var i = 0, ii = classes.length; i < ii; ++i) {
-            this.push(classes[i]);
-          }
-
-          this._updateClassName = function () {
-            elem.setAttribute('class', this.toString());
-          };
-        };
-
-        var classListProto = ClassList[protoProp] = [];
-
-        DOMEx[protoProp] = Error[protoProp];
-
-        classListProto.item = function (i) {
-          return this[i] || null;
-        };
-
-        classListProto.contains = function (token) {
-          token += '';
-          return checkTokenAndGetIndex(this, token) !== -1;
-        };
-
-        classListProto.add = function () {
-          var tokens = arguments;
-          var i = 0;
-          var ii = tokens.length;
-          var token = void 0;
-          var updated = false;
-
-          do {
-            token = tokens[i] + '';
-            if (checkTokenAndGetIndex(this, token) === -1) {
-              this.push(token);
-              updated = true;
-            }
-          } while (++i < ii);
-
-          if (updated) {
-            this._updateClassName();
-          }
-        };
-
-        classListProto.remove = function () {
-          var tokens = arguments;
-          var i = 0;
-          var ii = tokens.length;
-          var token = void 0;
-          var updated = false;
-          var index = void 0;
-
-          do {
-            token = tokens[i] + '';
-            index = checkTokenAndGetIndex(this, token);
-            while (index !== -1) {
-              this.splice(index, 1);
-              updated = true;
-              index = checkTokenAndGetIndex(this, token);
-            }
-          } while (++i < ii);
-
-          if (updated) {
-            this._updateClassName();
-          }
-        };
-
-        classListProto.toggle = function (token, force) {
-          token += '';
-
-          var result = this.contains(token);
-          var method = result ? force !== true && 'remove' : force !== false && 'add';
-
-          if (method) {
-            this[method](token);
-          }
-
-          if (force === true || force === false) {
-            return force;
-          }
-
-          return !result;
-        };
-
-        classListProto.toString = function () {
-          return this.join(' ');
-        };
-
-        Object.defineProperty(Element.prototype, 'classList', {
-          get: function get() {
-            return new ClassList(this);
-          },
-          enumerable: true,
-          configurable: true
         });
-      })();
-    } else {
-      var testElement = document.createElement('_');
-      testElement.classList.add('c1', 'c2');
-
-      if (!testElement.classList.contains('c2')) {
-        var createMethod = function createMethod(method) {
-          var original = DOMTokenList.prototype[method];
-
-          DOMTokenList.prototype[method] = function (token) {
-            for (var i = 0, ii = arguments.length; i < ii; ++i) {
-              token = arguments[i];
-              original.call(this, token);
-            }
-          };
-        };
-
-        createMethod('add');
-        createMethod('remove');
       }
-
-      testElement.classList.toggle('c3', false);
-
-      if (testElement.classList.contains('c3')) {
-        (function () {
-          var _toggle = DOMTokenList.prototype.toggle;
-
-          DOMTokenList.prototype.toggle = function (token, force) {
-            if (1 in arguments && !this.contains(token) === !force) {
-              return force;
-            }
-
-            return _toggle.call(this, token);
-          };
-        })();
-      }
-
-      testElement = null;
-    }
+    });
   }
 
-  function _ensurePerformance() {
-    // @license http://opensource.org/licenses/MIT
-    if ('performance' in window === false) {
-      window.performance = {};
-    }
-
-    if ('now' in window.performance === false) {
-      (function () {
-        var nowOffset = Date.now();
-
-        if (performance.timing && performance.timing.navigationStart) {
-          nowOffset = performance.timing.navigationStart;
-        }
-
-        window.performance.now = function now() {
-          return Date.now() - nowOffset;
-        };
-      })();
-    }
-
-    _PLATFORM.performance = window.performance;
-  }
-
-  function _ensureCustomEvent() {
-    if (!window.CustomEvent || typeof window.CustomEvent !== 'function') {
-      var _CustomEvent = function _CustomEvent(event, params) {
-        params = params || {
-          bubbles: false,
-          cancelable: false,
-          detail: undefined
-        };
-
-        var evt = document.createEvent('CustomEvent');
-        evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
-        return evt;
-      };
-
-      _CustomEvent.prototype = window.Event.prototype;
-      window.CustomEvent = _CustomEvent;
-    }
-  }
-
-  function _ensureElementMatches() {
-    if (Element && !Element.prototype.matches) {
-      var proto = Element.prototype;
-      proto.matches = proto.matchesSelector || proto.mozMatchesSelector || proto.msMatchesSelector || proto.oMatchesSelector || proto.webkitMatchesSelector;
-    }
-  }
-
-  var _FEATURE = exports._FEATURE = {};
-
-  _FEATURE.shadowDOM = function () {
-    return !!HTMLElement.prototype.attachShadow;
-  }();
-
-  _FEATURE.scopedCSS = function () {
-    return 'scoped' in document.createElement('style');
-  }();
-
-  _FEATURE.htmlTemplateElement = function () {
-    return 'content' in document.createElement('template');
-  }();
-
-  _FEATURE.mutationObserver = function () {
-    return !!(window.MutationObserver || window.WebKitMutationObserver);
-  }();
-
-  function _ensureHTMLTemplateElement() {
-    function isSVGTemplate(el) {
-      return el.tagName === 'template' && el.namespaceURI === 'http://www.w3.org/2000/svg';
-    }
-
-    function fixSVGTemplateElement(el) {
-      var template = el.ownerDocument.createElement('template');
-      var attrs = el.attributes;
-      var length = attrs.length;
-      var attr = void 0;
-
-      el.parentNode.insertBefore(template, el);
-
-      while (length-- > 0) {
-        attr = attrs[length];
-        template.setAttribute(attr.name, attr.value);
-        el.removeAttribute(attr.name);
-      }
-
-      el.parentNode.removeChild(el);
-
-      return fixHTMLTemplateElement(template);
-    }
-
-    function fixHTMLTemplateElement(template) {
-      var content = template.content = document.createDocumentFragment();
-      var child = void 0;
-
-      while (child = template.firstChild) {
-        content.appendChild(child);
-      }
-
-      return template;
-    }
-
-    function fixHTMLTemplateElementRoot(template) {
-      var content = fixHTMLTemplateElement(template).content;
-      var childTemplates = content.querySelectorAll('template');
-
-      for (var i = 0, ii = childTemplates.length; i < ii; ++i) {
-        var child = childTemplates[i];
-
-        if (isSVGTemplate(child)) {
-          fixSVGTemplateElement(child);
-        } else {
-          fixHTMLTemplateElement(child);
-        }
-      }
-
-      return template;
-    }
-
-    if (_FEATURE.htmlTemplateElement) {
-      _FEATURE.ensureHTMLTemplateElement = function (template) {
-        return template;
-      };
-    } else {
-      _FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElementRoot;
-    }
-  }
-
-  var shadowPoly = window.ShadowDOMPolyfill || null;
-
-  var _DOM = exports._DOM = {
-    Element: Element,
-    SVGElement: SVGElement,
-    boundary: 'aurelia-dom-boundary',
-    addEventListener: function addEventListener(eventName, callback, capture) {
-      document.addEventListener(eventName, callback, capture);
-    },
-    removeEventListener: function removeEventListener(eventName, callback, capture) {
-      document.removeEventListener(eventName, callback, capture);
-    },
-    adoptNode: function adoptNode(node) {
-      return document.adoptNode(node, true);
-    },
-    createElement: function createElement(tagName) {
-      return document.createElement(tagName);
-    },
-    createTextNode: function createTextNode(text) {
-      return document.createTextNode(text);
-    },
-    createComment: function createComment(text) {
-      return document.createComment(text);
-    },
-    createDocumentFragment: function createDocumentFragment() {
-      return document.createDocumentFragment();
-    },
-    createMutationObserver: function createMutationObserver(callback) {
-      return new (window.MutationObserver || window.WebKitMutationObserver)(callback);
-    },
-    createCustomEvent: function createCustomEvent(eventType, options) {
-      return new window.CustomEvent(eventType, options);
-    },
-    dispatchEvent: function dispatchEvent(evt) {
-      document.dispatchEvent(evt);
-    },
-    getComputedStyle: function getComputedStyle(element) {
-      return window.getComputedStyle(element);
-    },
-    getElementById: function getElementById(id) {
-      return document.getElementById(id);
-    },
-    querySelectorAll: function querySelectorAll(query) {
-      return document.querySelectorAll(query);
-    },
-    nextElementSibling: function nextElementSibling(element) {
-      if (element.nextElementSibling) {
-        return element.nextElementSibling;
-      }
-      do {
-        element = element.nextSibling;
-      } while (element && element.nodeType !== 1);
-      return element;
-    },
-    createTemplateFromMarkup: function createTemplateFromMarkup(markup) {
-      var parser = document.createElement('div');
-      parser.innerHTML = markup;
-
-      var temp = parser.firstElementChild;
-      if (!temp || temp.nodeName !== 'TEMPLATE') {
-        throw new Error('Template markup must be wrapped in a <template> element e.g. <template> <!-- markup here --> </template>');
-      }
-
-      return _FEATURE.ensureHTMLTemplateElement(temp);
-    },
-    appendNode: function appendNode(newNode, parentNode) {
-      (parentNode || document.body).appendChild(newNode);
-    },
-    replaceNode: function replaceNode(newNode, node, parentNode) {
-      if (node.parentNode) {
-        node.parentNode.replaceChild(newNode, node);
-      } else if (shadowPoly !== null) {
-        shadowPoly.unwrap(parentNode).replaceChild(shadowPoly.unwrap(newNode), shadowPoly.unwrap(node));
+  function ready(global) {
+    return new Promise(function (resolve, reject) {
+      if (global.document.readyState === 'complete') {
+        resolve(global.document);
       } else {
-        parentNode.replaceChild(newNode, node);
-      }
-    },
-    removeNode: function removeNode(node, parentNode) {
-      if (node.parentNode) {
-        node.parentNode.removeChild(node);
-      } else if (parentNode) {
-        if (shadowPoly !== null) {
-          shadowPoly.unwrap(parentNode).removeChild(shadowPoly.unwrap(node));
-        } else {
-          parentNode.removeChild(node);
-        }
-      }
-    },
-    injectStyles: function injectStyles(styles, destination, prepend) {
-      var node = document.createElement('style');
-      node.innerHTML = styles;
-      node.type = 'text/css';
-
-      destination = destination || document.head;
-
-      if (prepend && destination.childNodes.length > 0) {
-        destination.insertBefore(node, destination.childNodes[0]);
-      } else {
-        destination.appendChild(node);
+        global.document.addEventListener('DOMContentLoaded', completed);
+        global.addEventListener('load', completed);
       }
 
-      return node;
-    }
-  };
+      function completed() {
+        global.document.removeEventListener('DOMContentLoaded', completed);
+        global.removeEventListener('load', completed);
+        resolve(global.document);
+      }
+    });
+  }
 
-  function initialize() {
-    if (_aureliaPal.isInitialized) {
-      return;
+  function createLoader() {
+    if (_aureliaPal.PLATFORM.Loader) {
+      return Promise.resolve(new _aureliaPal.PLATFORM.Loader());
     }
 
-    _ensureCustomEvent();
-    _ensureFunctionName();
-    _ensureHTMLTemplateElement();
-    _ensureElementMatches();
-    _ensureClassList();
-    _ensurePerformance();
-
-    (0, _aureliaPal.initializePAL)(function (platform, feature, dom) {
-      Object.assign(platform, _PLATFORM);
-      Object.assign(feature, _FEATURE);
-      Object.assign(dom, _DOM);
-
-      (function (global) {
-        global.console = global.console || {};
-        var con = global.console;
-        var prop = void 0;
-        var method = void 0;
-        var empty = {};
-        var dummy = function dummy() {};
-        var properties = 'memory'.split(',');
-        var methods = ('assert,clear,count,debug,dir,dirxml,error,exception,group,' + 'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' + 'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn').split(',');
-        while (prop = properties.pop()) {
-          if (!con[prop]) con[prop] = empty;
-        }while (method = methods.pop()) {
-          if (!con[method]) con[method] = dummy;
-        }
-      })(platform.global);
-
-      if (platform.global.console && _typeof(console.log) === 'object') {
-        ['log', 'info', 'warn', 'error', 'assert', 'dir', 'clear', 'profile', 'profileEnd'].forEach(function (method) {
-          console[method] = this.bind(console[method], console);
-        }, Function.prototype.call);
-      }
-
-      Object.defineProperty(dom, 'title', {
-        get: function get() {
-          return document.title;
-        },
-        set: function set(value) {
-          document.title = value;
-        }
+    if (window.System && typeof window.System.import === 'function') {
+      return System.normalize('aurelia-bootstrapper').then(function (bootstrapperName) {
+        return System.normalize('aurelia-loader-default', bootstrapperName);
+      }).then(function (loaderName) {
+        return System.import(loaderName).then(function (m) {
+          return new m.DefaultLoader();
+        });
       });
+    }
 
-      Object.defineProperty(dom, 'activeElement', {
-        get: function get() {
-          return document.activeElement;
-        }
+    if (typeof window.require === 'function') {
+      return new Promise(function (resolve, reject) {
+        return require(['aurelia-loader-default'], function (m) {
+          return resolve(new m.DefaultLoader());
+        }, reject);
       });
+    }
 
-      Object.defineProperty(platform, 'XMLHttpRequest', {
-        get: function get() {
-          return platform.global.XMLHttpRequest;
-        }
+    return Promise.reject('No PLATFORM.Loader is defined and there is neither a System API (ES6) or a Require API (AMD) globally available to load your app.');
+  }
+
+  function preparePlatform(loader) {
+    return loader.normalize('aurelia-bootstrapper').then(function (bootstrapperName) {
+      return loader.normalize('aurelia-framework', bootstrapperName).then(function (frameworkName) {
+        loader.map('aurelia-framework', frameworkName);
+
+        return Promise.all([loader.normalize('aurelia-dependency-injection', frameworkName).then(function (diName) {
+          return loader.map('aurelia-dependency-injection', diName);
+        }), loader.normalize('aurelia-router', bootstrapperName).then(function (routerName) {
+          return loader.map('aurelia-router', routerName);
+        }), loader.normalize('aurelia-logging-console', bootstrapperName).then(function (loggingConsoleName) {
+          return loader.map('aurelia-logging-console', loggingConsoleName);
+        })]).then(function () {
+          return loader.loadModule(frameworkName).then(function (m) {
+            return Aurelia = m.Aurelia;
+          });
+        });
       });
     });
+  }
+
+  function handleApp(loader, appHost) {
+    var moduleId = appHost.getAttribute('aurelia-app') || appHost.getAttribute('data-aurelia-app');
+    return config(loader, appHost, moduleId);
+  }
+
+  function config(loader, appHost, configModuleId) {
+    var aurelia = new Aurelia(loader);
+    aurelia.host = appHost;
+    aurelia.configModuleId = configModuleId || null;
+
+    if (configModuleId) {
+      return loader.loadModule(configModuleId).then(function (customConfig) {
+        if (!customConfig.configure) {
+          throw new Error("Cannot initialize module '" + configModuleId + "' without a configure function.");
+        }
+
+        customConfig.configure(aurelia);
+      });
+    }
+
+    aurelia.use.standardConfiguration().developmentLogging();
+
+    return aurelia.start().then(function () {
+      return aurelia.setRoot();
+    });
+  }
+
+  function run() {
+    return ready(window).then(function (doc) {
+      (0, _aureliaPalBrowser.initialize)();
+
+      var appHost = doc.querySelectorAll('[aurelia-app],[data-aurelia-app]');
+      return createLoader().then(function (loader) {
+        return preparePlatform(loader).then(function () {
+          for (var i = 0, ii = appHost.length; i < ii; ++i) {
+            handleApp(loader, appHost[i]).catch(console.error.bind(console));
+          }
+
+          sharedLoader = loader;
+          for (var _i = 0, _ii = bootstrapQueue.length; _i < _ii; ++_i) {
+            bootstrapQueue[_i]();
+          }
+          bootstrapQueue = null;
+        });
+      });
+    });
+  }
+
+  function bootstrap(configure) {
+    return onBootstrap(function (loader) {
+      var aurelia = new Aurelia(loader);
+      return configure(aurelia);
+    });
+  }
+
+  run();
+});
+define('aurelia-loader-default',['exports', 'aurelia-loader', 'aurelia-pal', 'aurelia-metadata'], function (exports, _aureliaLoader, _aureliaPal, _aureliaMetadata) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.DefaultLoader = exports.TextTemplateLoader = undefined;
+
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+
+    subClass.prototype = Object.create(superClass && superClass.prototype, {
+      constructor: {
+        value: subClass,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+
+  
+
+  var TextTemplateLoader = exports.TextTemplateLoader = function () {
+    function TextTemplateLoader() {
+      
+    }
+
+    TextTemplateLoader.prototype.loadTemplate = function loadTemplate(loader, entry) {
+      return loader.loadText(entry.address).then(function (text) {
+        entry.template = _aureliaPal.DOM.createTemplateFromMarkup(text);
+      });
+    };
+
+    return TextTemplateLoader;
+  }();
+
+  function ensureOriginOnExports(executed, name) {
+    var target = executed;
+    var key = void 0;
+    var exportedValue = void 0;
+
+    if (target.__useDefault) {
+      target = target['default'];
+    }
+
+    _aureliaMetadata.Origin.set(target, new _aureliaMetadata.Origin(name, 'default'));
+
+    for (key in target) {
+      exportedValue = target[key];
+
+      if (typeof exportedValue === 'function') {
+        _aureliaMetadata.Origin.set(exportedValue, new _aureliaMetadata.Origin(name, key));
+      }
+    }
+
+    return executed;
+  }
+
+  var DefaultLoader = exports.DefaultLoader = function (_Loader) {
+    _inherits(DefaultLoader, _Loader);
+
+    function DefaultLoader() {
+      
+
+      var _this = _possibleConstructorReturn(this, _Loader.call(this));
+
+      _this.textPluginName = 'text';
+
+
+      _this.moduleRegistry = Object.create(null);
+      _this.useTemplateLoader(new TextTemplateLoader());
+
+      var that = _this;
+
+      _this.addPlugin('template-registry-entry', {
+        'fetch': function fetch(address) {
+          var entry = that.getOrCreateTemplateRegistryEntry(address);
+          return entry.templateIsLoaded ? entry : that.templateLoader.loadTemplate(that, entry).then(function (x) {
+            return entry;
+          });
+        }
+      });
+      return _this;
+    }
+
+    DefaultLoader.prototype.useTemplateLoader = function useTemplateLoader(templateLoader) {
+      this.templateLoader = templateLoader;
+    };
+
+    DefaultLoader.prototype.loadAllModules = function loadAllModules(ids) {
+      var loads = [];
+
+      for (var i = 0, ii = ids.length; i < ii; ++i) {
+        loads.push(this.loadModule(ids[i]));
+      }
+
+      return Promise.all(loads);
+    };
+
+    DefaultLoader.prototype.loadTemplate = function loadTemplate(url) {
+      return this._import(this.applyPluginToUrl(url, 'template-registry-entry'));
+    };
+
+    DefaultLoader.prototype.loadText = function loadText(url) {
+      return this._import(this.applyPluginToUrl(url, this.textPluginName)).then(function (textOrModule) {
+        if (typeof textOrModule === 'string') {
+          return textOrModule;
+        }
+
+        return textOrModule['default'];
+      });
+    };
+
+    return DefaultLoader;
+  }(_aureliaLoader.Loader);
+
+  _aureliaPal.PLATFORM.Loader = DefaultLoader;
+
+  if (!_aureliaPal.PLATFORM.global.System || !_aureliaPal.PLATFORM.global.System.import) {
+    if (_aureliaPal.PLATFORM.global.requirejs && requirejs.s && requirejs.s.contexts && requirejs.s.contexts._ && requirejs.s.contexts._.defined) {
+      _aureliaPal.PLATFORM.eachModule = function (callback) {
+        var defined = requirejs.s.contexts._.defined;
+        for (var key in defined) {
+          try {
+            if (callback(key, defined[key])) return;
+          } catch (e) {}
+        }
+      };
+    } else {
+      _aureliaPal.PLATFORM.eachModule = function (callback) {};
+    }
+
+    DefaultLoader.prototype._import = function (moduleId) {
+      return new Promise(function (resolve, reject) {
+        require([moduleId], resolve, reject);
+      });
+    };
+
+    DefaultLoader.prototype.loadModule = function (id) {
+      var _this2 = this;
+
+      var existing = this.moduleRegistry[id];
+      if (existing !== undefined) {
+        return Promise.resolve(existing);
+      }
+
+      return new Promise(function (resolve, reject) {
+        require([id], function (m) {
+          _this2.moduleRegistry[id] = m;
+          resolve(ensureOriginOnExports(m, id));
+        }, reject);
+      });
+    };
+
+    DefaultLoader.prototype.map = function (id, source) {};
+
+    DefaultLoader.prototype.normalize = function (moduleId, relativeTo) {
+      return Promise.resolve(moduleId);
+    };
+
+    DefaultLoader.prototype.normalizeSync = function (moduleId, relativeTo) {
+      return moduleId;
+    };
+
+    DefaultLoader.prototype.applyPluginToUrl = function (url, pluginName) {
+      return pluginName + '!' + url;
+    };
+
+    DefaultLoader.prototype.addPlugin = function (pluginName, implementation) {
+      var nonAnonDefine = define;
+      nonAnonDefine(pluginName, [], {
+        'load': function load(name, req, onload) {
+          var result = implementation.fetch(name);
+          Promise.resolve(result).then(onload);
+        }
+      });
+    };
+  } else {
+    _aureliaPal.PLATFORM.eachModule = function (callback) {
+      var modules = System._loader.modules;
+
+      for (var key in modules) {
+        try {
+          if (callback(key, modules[key].module)) return;
+        } catch (e) {}
+      }
+    };
+
+    System.set('text', System.newModule({
+      'translate': function translate(load) {
+        return 'module.exports = "' + load.source.replace(/(["\\])/g, '\\$1').replace(/[\f]/g, '\\f').replace(/[\b]/g, '\\b').replace(/[\n]/g, '\\n').replace(/[\t]/g, '\\t').replace(/[\r]/g, '\\r').replace(/[\u2028]/g, '\\u2028').replace(/[\u2029]/g, '\\u2029') + '";';
+      }
+    }));
+
+    DefaultLoader.prototype._import = function (moduleId) {
+      return System.import(moduleId);
+    };
+
+    DefaultLoader.prototype.loadModule = function (id) {
+      var _this3 = this;
+
+      return System.normalize(id).then(function (newId) {
+        var existing = _this3.moduleRegistry[newId];
+        if (existing !== undefined) {
+          return Promise.resolve(existing);
+        }
+
+        return System.import(newId).then(function (m) {
+          _this3.moduleRegistry[newId] = m;
+          return ensureOriginOnExports(m, newId);
+        });
+      });
+    };
+
+    DefaultLoader.prototype.map = function (id, source) {
+      System.map[id] = source;
+    };
+
+    DefaultLoader.prototype.normalizeSync = function (moduleId, relativeTo) {
+      return System.normalizeSync(moduleId, relativeTo);
+    };
+
+    DefaultLoader.prototype.normalize = function (moduleId, relativeTo) {
+      return System.normalize(moduleId, relativeTo);
+    };
+
+    DefaultLoader.prototype.applyPluginToUrl = function (url, pluginName) {
+      return url + '!' + pluginName;
+    };
+
+    DefaultLoader.prototype.addPlugin = function (pluginName, implementation) {
+      System.set(pluginName, System.newModule({
+        'fetch': function fetch(load, _fetch) {
+          var result = implementation.fetch(load.address);
+          return Promise.resolve(result).then(function (x) {
+            load.metadata.result = x;
+            return '';
+          });
+        },
+        'instantiate': function instantiate(load) {
+          return load.metadata.result;
+        }
+      }));
+    };
   }
 });
 define('aurelia-path',['exports'], function (exports) {
@@ -15985,6 +15416,64 @@ define('aurelia-task-queue',['exports', 'aurelia-pal'], function (exports, _aure
     };
 
     return TaskQueue;
+  }();
+});
+define('aurelia-logging-console',['exports', 'aurelia-logging'], function (exports, _aureliaLogging) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.ConsoleAppender = undefined;
+
+  
+
+  var ConsoleAppender = exports.ConsoleAppender = function () {
+    function ConsoleAppender() {
+      
+    }
+
+    ConsoleAppender.prototype.debug = function debug(logger) {
+      var _console;
+
+      for (var _len = arguments.length, rest = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        rest[_key - 1] = arguments[_key];
+      }
+
+      (_console = console).debug.apply(_console, ['DEBUG [' + logger.id + ']'].concat(rest));
+    };
+
+    ConsoleAppender.prototype.info = function info(logger) {
+      var _console2;
+
+      for (var _len2 = arguments.length, rest = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+        rest[_key2 - 1] = arguments[_key2];
+      }
+
+      (_console2 = console).info.apply(_console2, ['INFO [' + logger.id + ']'].concat(rest));
+    };
+
+    ConsoleAppender.prototype.warn = function warn(logger) {
+      var _console3;
+
+      for (var _len3 = arguments.length, rest = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+        rest[_key3 - 1] = arguments[_key3];
+      }
+
+      (_console3 = console).warn.apply(_console3, ['WARN [' + logger.id + ']'].concat(rest));
+    };
+
+    ConsoleAppender.prototype.error = function error(logger) {
+      var _console4;
+
+      for (var _len4 = arguments.length, rest = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
+        rest[_key4 - 1] = arguments[_key4];
+      }
+
+      (_console4 = console).error.apply(_console4, ['ERROR [' + logger.id + ']'].concat(rest));
+    };
+
+    return ConsoleAppender;
   }();
 });
 define('aurelia-templating',['exports', 'aurelia-logging', 'aurelia-metadata', 'aurelia-pal', 'aurelia-path', 'aurelia-loader', 'aurelia-dependency-injection', 'aurelia-binding', 'aurelia-task-queue'], function (exports, _aureliaLogging, _aureliaMetadata, _aureliaPal, _aureliaPath, _aureliaLoader, _aureliaDependencyInjection, _aureliaBinding, _aureliaTaskQueue) {
@@ -20784,6 +20273,517 @@ define('aurelia-templating',['exports', 'aurelia-logging', 'aurelia-metadata', '
 
     return TemplatingEngine;
   }()) || _class23);
+});
+define('aurelia-pal-browser',['exports', 'aurelia-pal'], function (exports, _aureliaPal) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports._DOM = exports._FEATURE = exports._PLATFORM = undefined;
+  exports._ensureFunctionName = _ensureFunctionName;
+  exports._ensureClassList = _ensureClassList;
+  exports._ensurePerformance = _ensurePerformance;
+  exports._ensureCustomEvent = _ensureCustomEvent;
+  exports._ensureElementMatches = _ensureElementMatches;
+  exports._ensureHTMLTemplateElement = _ensureHTMLTemplateElement;
+  exports.initialize = initialize;
+
+  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  };
+
+  var _PLATFORM = exports._PLATFORM = {
+    location: window.location,
+    history: window.history,
+    addEventListener: function addEventListener(eventName, callback, capture) {
+      this.global.addEventListener(eventName, callback, capture);
+    },
+    removeEventListener: function removeEventListener(eventName, callback, capture) {
+      this.global.removeEventListener(eventName, callback, capture);
+    },
+
+    performance: window.performance,
+    requestAnimationFrame: function requestAnimationFrame(callback) {
+      return this.global.requestAnimationFrame(callback);
+    }
+  };
+
+  function _ensureFunctionName() {
+    function test() {}
+
+    if (!test.name) {
+      Object.defineProperty(Function.prototype, 'name', {
+        get: function get() {
+          var name = this.toString().match(/^\s*function\s*(\S*)\s*\(/)[1];
+
+          Object.defineProperty(this, 'name', { value: name });
+          return name;
+        }
+      });
+    }
+  }
+
+  function _ensureClassList() {
+    if (!('classList' in document.createElement('_')) || document.createElementNS && !('classList' in document.createElementNS('http://www.w3.org/2000/svg', 'g'))) {
+      (function () {
+        var protoProp = 'prototype';
+        var strTrim = String.prototype.trim;
+        var arrIndexOf = Array.prototype.indexOf;
+        var emptyArray = [];
+
+        var DOMEx = function DOMEx(type, message) {
+          this.name = type;
+          this.code = DOMException[type];
+          this.message = message;
+        };
+
+        var checkTokenAndGetIndex = function checkTokenAndGetIndex(classList, token) {
+          if (token === '') {
+            throw new DOMEx('SYNTAX_ERR', 'An invalid or illegal string was specified');
+          }
+
+          if (/\s/.test(token)) {
+            throw new DOMEx('INVALID_CHARACTER_ERR', 'String contains an invalid character');
+          }
+
+          return arrIndexOf.call(classList, token);
+        };
+
+        var ClassList = function ClassList(elem) {
+          var trimmedClasses = strTrim.call(elem.getAttribute('class') || '');
+          var classes = trimmedClasses ? trimmedClasses.split(/\s+/) : emptyArray;
+
+          for (var i = 0, ii = classes.length; i < ii; ++i) {
+            this.push(classes[i]);
+          }
+
+          this._updateClassName = function () {
+            elem.setAttribute('class', this.toString());
+          };
+        };
+
+        var classListProto = ClassList[protoProp] = [];
+
+        DOMEx[protoProp] = Error[protoProp];
+
+        classListProto.item = function (i) {
+          return this[i] || null;
+        };
+
+        classListProto.contains = function (token) {
+          token += '';
+          return checkTokenAndGetIndex(this, token) !== -1;
+        };
+
+        classListProto.add = function () {
+          var tokens = arguments;
+          var i = 0;
+          var ii = tokens.length;
+          var token = void 0;
+          var updated = false;
+
+          do {
+            token = tokens[i] + '';
+            if (checkTokenAndGetIndex(this, token) === -1) {
+              this.push(token);
+              updated = true;
+            }
+          } while (++i < ii);
+
+          if (updated) {
+            this._updateClassName();
+          }
+        };
+
+        classListProto.remove = function () {
+          var tokens = arguments;
+          var i = 0;
+          var ii = tokens.length;
+          var token = void 0;
+          var updated = false;
+          var index = void 0;
+
+          do {
+            token = tokens[i] + '';
+            index = checkTokenAndGetIndex(this, token);
+            while (index !== -1) {
+              this.splice(index, 1);
+              updated = true;
+              index = checkTokenAndGetIndex(this, token);
+            }
+          } while (++i < ii);
+
+          if (updated) {
+            this._updateClassName();
+          }
+        };
+
+        classListProto.toggle = function (token, force) {
+          token += '';
+
+          var result = this.contains(token);
+          var method = result ? force !== true && 'remove' : force !== false && 'add';
+
+          if (method) {
+            this[method](token);
+          }
+
+          if (force === true || force === false) {
+            return force;
+          }
+
+          return !result;
+        };
+
+        classListProto.toString = function () {
+          return this.join(' ');
+        };
+
+        Object.defineProperty(Element.prototype, 'classList', {
+          get: function get() {
+            return new ClassList(this);
+          },
+          enumerable: true,
+          configurable: true
+        });
+      })();
+    } else {
+      var testElement = document.createElement('_');
+      testElement.classList.add('c1', 'c2');
+
+      if (!testElement.classList.contains('c2')) {
+        var createMethod = function createMethod(method) {
+          var original = DOMTokenList.prototype[method];
+
+          DOMTokenList.prototype[method] = function (token) {
+            for (var i = 0, ii = arguments.length; i < ii; ++i) {
+              token = arguments[i];
+              original.call(this, token);
+            }
+          };
+        };
+
+        createMethod('add');
+        createMethod('remove');
+      }
+
+      testElement.classList.toggle('c3', false);
+
+      if (testElement.classList.contains('c3')) {
+        (function () {
+          var _toggle = DOMTokenList.prototype.toggle;
+
+          DOMTokenList.prototype.toggle = function (token, force) {
+            if (1 in arguments && !this.contains(token) === !force) {
+              return force;
+            }
+
+            return _toggle.call(this, token);
+          };
+        })();
+      }
+
+      testElement = null;
+    }
+  }
+
+  function _ensurePerformance() {
+    // @license http://opensource.org/licenses/MIT
+    if ('performance' in window === false) {
+      window.performance = {};
+    }
+
+    if ('now' in window.performance === false) {
+      (function () {
+        var nowOffset = Date.now();
+
+        if (performance.timing && performance.timing.navigationStart) {
+          nowOffset = performance.timing.navigationStart;
+        }
+
+        window.performance.now = function now() {
+          return Date.now() - nowOffset;
+        };
+      })();
+    }
+
+    _PLATFORM.performance = window.performance;
+  }
+
+  function _ensureCustomEvent() {
+    if (!window.CustomEvent || typeof window.CustomEvent !== 'function') {
+      var _CustomEvent = function _CustomEvent(event, params) {
+        params = params || {
+          bubbles: false,
+          cancelable: false,
+          detail: undefined
+        };
+
+        var evt = document.createEvent('CustomEvent');
+        evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+        return evt;
+      };
+
+      _CustomEvent.prototype = window.Event.prototype;
+      window.CustomEvent = _CustomEvent;
+    }
+  }
+
+  function _ensureElementMatches() {
+    if (Element && !Element.prototype.matches) {
+      var proto = Element.prototype;
+      proto.matches = proto.matchesSelector || proto.mozMatchesSelector || proto.msMatchesSelector || proto.oMatchesSelector || proto.webkitMatchesSelector;
+    }
+  }
+
+  var _FEATURE = exports._FEATURE = {};
+
+  _FEATURE.shadowDOM = function () {
+    return !!HTMLElement.prototype.attachShadow;
+  }();
+
+  _FEATURE.scopedCSS = function () {
+    return 'scoped' in document.createElement('style');
+  }();
+
+  _FEATURE.htmlTemplateElement = function () {
+    return 'content' in document.createElement('template');
+  }();
+
+  _FEATURE.mutationObserver = function () {
+    return !!(window.MutationObserver || window.WebKitMutationObserver);
+  }();
+
+  function _ensureHTMLTemplateElement() {
+    function isSVGTemplate(el) {
+      return el.tagName === 'template' && el.namespaceURI === 'http://www.w3.org/2000/svg';
+    }
+
+    function fixSVGTemplateElement(el) {
+      var template = el.ownerDocument.createElement('template');
+      var attrs = el.attributes;
+      var length = attrs.length;
+      var attr = void 0;
+
+      el.parentNode.insertBefore(template, el);
+
+      while (length-- > 0) {
+        attr = attrs[length];
+        template.setAttribute(attr.name, attr.value);
+        el.removeAttribute(attr.name);
+      }
+
+      el.parentNode.removeChild(el);
+
+      return fixHTMLTemplateElement(template);
+    }
+
+    function fixHTMLTemplateElement(template) {
+      var content = template.content = document.createDocumentFragment();
+      var child = void 0;
+
+      while (child = template.firstChild) {
+        content.appendChild(child);
+      }
+
+      return template;
+    }
+
+    function fixHTMLTemplateElementRoot(template) {
+      var content = fixHTMLTemplateElement(template).content;
+      var childTemplates = content.querySelectorAll('template');
+
+      for (var i = 0, ii = childTemplates.length; i < ii; ++i) {
+        var child = childTemplates[i];
+
+        if (isSVGTemplate(child)) {
+          fixSVGTemplateElement(child);
+        } else {
+          fixHTMLTemplateElement(child);
+        }
+      }
+
+      return template;
+    }
+
+    if (_FEATURE.htmlTemplateElement) {
+      _FEATURE.ensureHTMLTemplateElement = function (template) {
+        return template;
+      };
+    } else {
+      _FEATURE.ensureHTMLTemplateElement = fixHTMLTemplateElementRoot;
+    }
+  }
+
+  var shadowPoly = window.ShadowDOMPolyfill || null;
+
+  var _DOM = exports._DOM = {
+    Element: Element,
+    SVGElement: SVGElement,
+    boundary: 'aurelia-dom-boundary',
+    addEventListener: function addEventListener(eventName, callback, capture) {
+      document.addEventListener(eventName, callback, capture);
+    },
+    removeEventListener: function removeEventListener(eventName, callback, capture) {
+      document.removeEventListener(eventName, callback, capture);
+    },
+    adoptNode: function adoptNode(node) {
+      return document.adoptNode(node, true);
+    },
+    createElement: function createElement(tagName) {
+      return document.createElement(tagName);
+    },
+    createTextNode: function createTextNode(text) {
+      return document.createTextNode(text);
+    },
+    createComment: function createComment(text) {
+      return document.createComment(text);
+    },
+    createDocumentFragment: function createDocumentFragment() {
+      return document.createDocumentFragment();
+    },
+    createMutationObserver: function createMutationObserver(callback) {
+      return new (window.MutationObserver || window.WebKitMutationObserver)(callback);
+    },
+    createCustomEvent: function createCustomEvent(eventType, options) {
+      return new window.CustomEvent(eventType, options);
+    },
+    dispatchEvent: function dispatchEvent(evt) {
+      document.dispatchEvent(evt);
+    },
+    getComputedStyle: function getComputedStyle(element) {
+      return window.getComputedStyle(element);
+    },
+    getElementById: function getElementById(id) {
+      return document.getElementById(id);
+    },
+    querySelectorAll: function querySelectorAll(query) {
+      return document.querySelectorAll(query);
+    },
+    nextElementSibling: function nextElementSibling(element) {
+      if (element.nextElementSibling) {
+        return element.nextElementSibling;
+      }
+      do {
+        element = element.nextSibling;
+      } while (element && element.nodeType !== 1);
+      return element;
+    },
+    createTemplateFromMarkup: function createTemplateFromMarkup(markup) {
+      var parser = document.createElement('div');
+      parser.innerHTML = markup;
+
+      var temp = parser.firstElementChild;
+      if (!temp || temp.nodeName !== 'TEMPLATE') {
+        throw new Error('Template markup must be wrapped in a <template> element e.g. <template> <!-- markup here --> </template>');
+      }
+
+      return _FEATURE.ensureHTMLTemplateElement(temp);
+    },
+    appendNode: function appendNode(newNode, parentNode) {
+      (parentNode || document.body).appendChild(newNode);
+    },
+    replaceNode: function replaceNode(newNode, node, parentNode) {
+      if (node.parentNode) {
+        node.parentNode.replaceChild(newNode, node);
+      } else if (shadowPoly !== null) {
+        shadowPoly.unwrap(parentNode).replaceChild(shadowPoly.unwrap(newNode), shadowPoly.unwrap(node));
+      } else {
+        parentNode.replaceChild(newNode, node);
+      }
+    },
+    removeNode: function removeNode(node, parentNode) {
+      if (node.parentNode) {
+        node.parentNode.removeChild(node);
+      } else if (parentNode) {
+        if (shadowPoly !== null) {
+          shadowPoly.unwrap(parentNode).removeChild(shadowPoly.unwrap(node));
+        } else {
+          parentNode.removeChild(node);
+        }
+      }
+    },
+    injectStyles: function injectStyles(styles, destination, prepend) {
+      var node = document.createElement('style');
+      node.innerHTML = styles;
+      node.type = 'text/css';
+
+      destination = destination || document.head;
+
+      if (prepend && destination.childNodes.length > 0) {
+        destination.insertBefore(node, destination.childNodes[0]);
+      } else {
+        destination.appendChild(node);
+      }
+
+      return node;
+    }
+  };
+
+  function initialize() {
+    if (_aureliaPal.isInitialized) {
+      return;
+    }
+
+    _ensureCustomEvent();
+    _ensureFunctionName();
+    _ensureHTMLTemplateElement();
+    _ensureElementMatches();
+    _ensureClassList();
+    _ensurePerformance();
+
+    (0, _aureliaPal.initializePAL)(function (platform, feature, dom) {
+      Object.assign(platform, _PLATFORM);
+      Object.assign(feature, _FEATURE);
+      Object.assign(dom, _DOM);
+
+      (function (global) {
+        global.console = global.console || {};
+        var con = global.console;
+        var prop = void 0;
+        var method = void 0;
+        var empty = {};
+        var dummy = function dummy() {};
+        var properties = 'memory'.split(',');
+        var methods = ('assert,clear,count,debug,dir,dirxml,error,exception,group,' + 'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' + 'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn').split(',');
+        while (prop = properties.pop()) {
+          if (!con[prop]) con[prop] = empty;
+        }while (method = methods.pop()) {
+          if (!con[method]) con[method] = dummy;
+        }
+      })(platform.global);
+
+      if (platform.global.console && _typeof(console.log) === 'object') {
+        ['log', 'info', 'warn', 'error', 'assert', 'dir', 'clear', 'profile', 'profileEnd'].forEach(function (method) {
+          console[method] = this.bind(console[method], console);
+        }, Function.prototype.call);
+      }
+
+      Object.defineProperty(dom, 'title', {
+        get: function get() {
+          return document.title;
+        },
+        set: function set(value) {
+          document.title = value;
+        }
+      });
+
+      Object.defineProperty(dom, 'activeElement', {
+        get: function get() {
+          return document.activeElement;
+        }
+      });
+
+      Object.defineProperty(platform, 'XMLHttpRequest', {
+        get: function get() {
+          return platform.global.XMLHttpRequest;
+        }
+      });
+    });
+  }
 });
 define('text',{});
 define('aurelia-templating-binding',['exports', 'aurelia-logging', 'aurelia-binding', 'aurelia-templating'], function (exports, _aureliaLogging, _aureliaBinding, _aureliaTemplating) {
