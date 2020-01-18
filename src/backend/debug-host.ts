@@ -129,8 +129,10 @@ var createAureliaDebugger = function () {
 
     function getDebugPropertyKeys(obj) {
       let props = [];
+      
+      const keys = [...Object.keys(obj), ...Object.getOwnPropertyNames(obj)];
 
-      for (let key in obj) {
+      for (const key of keys) {
         if (key && !key.startsWith('_') && typeof obj[key] !== 'function') {
           props.push(key);
         }
