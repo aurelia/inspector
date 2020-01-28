@@ -1,6 +1,6 @@
 {
   "name": "aurelia-inspector",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "A Chrome plugin that adds a new inspector pane to the Elements panel, providing Aurelia-specific information about selected elements.",
   "keywords": [
     "aurelia",
